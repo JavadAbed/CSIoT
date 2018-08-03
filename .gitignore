@@ -1,1 +1,4 @@
 /core/config.py
+*.pyc
+__pycache__/
+
