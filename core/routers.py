@@ -4,12 +4,6 @@ from core.common import WebException, error_get_message, WebSuccess
 from core.annotations import make_params, api_wrapper
 
 
-
-# @app.errorhandler(RequireLoginException)
-# def handle_login_required(exception):
-#     return redirect(url_for("login_page"))
-
-
 @app.route('/', methods=['GET'])
 def index_page():
     return render_template("index.html")
@@ -18,8 +12,8 @@ def index_page():
 @api_wrapper
 @make_params
 def new_agent(params):
-   agent.new_agent(params);
-   return WebSuccess();
+   data = agent.new_agent(params);
+   return WebSuccess(data = data);
 
 
 
@@ -30,4 +24,21 @@ def upload_agent():
    agent.upload_agent(f)
    return WebSuccess();
 
+
+@app.route('/agents', methods=['GET'])
+@api_wrapper
+def agents():
+   agents = agent.agents();
+   return WebSuccess(data = agents);
+
+@app.route('/exportData', methods=['GET'])
+@api_wrapper
+def export_agents():
+   agents = agent.agents();
+   csv = agent.makeCSVString(agents)
+   return Response(
+        csv,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                 "attachment; filename=agents.csv"})
 

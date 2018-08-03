@@ -30,11 +30,26 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" data-toggle="modal" data-target="#newNodeModal" href="#">New Agent</a>
               <a class="dropdown-item" data-toggle="modal" data-target="#uploadNodeModal" href="#">Upload Agent Data</a>
+              <a class="dropdown-item" id="exportAgents" href="/exportData">Export Agent Data</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#clearModal" href="#">Clear All Data</a>
 
         </div>
+</li>      
+<li class="nav-item">
+              <a class="nav-link" id="refreshGraph" href="#">Refresh View</a>
 </li>
 
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Layout
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" id="layoutGraphCircle" href="#">Cricle</a>
+              <a class="dropdown-item" id="layoutGraphGrid" href="#">Grid</a>
+              <a class="dropdown-item" id="layoutGraphPredef" href="#">Preset X,Y Cordination</a>
+              <a class="dropdown-item" id="layoutGraphRandom" href="#">Random</a>
 
+        </div> </li>
 
           </ul>
         </div>
@@ -74,13 +89,16 @@
         <input type="text" class="form-control" name="agentName" id="agentName" placeholder="Agent Name">
   </div>
   <div class="form-group">
-    <input type="text" class="form-control" name="agentBatch" id="agentBatch" placeholder="Batch Number">
-  </div>
-  <div class="form-group">
     <input type="text" class="form-control" name="agentOwner" id="agentOwner" placeholder="Owner Name">
   </div>
-  <div class="form-group">
+
+  <div class="form-group row">
+    <div class="col">
+       <input type="text" class="form-control" name="agentBatch" id="agentBatch" placeholder="Batch Number">
+    </div>
+  <div class="col">
     <input type="text" class="form-control" name="agentFamily" id="agentFamily" placeholder="Family Member ID">
+  </div>
   </div>
   <div class="form-group row">
     <div class="col">
@@ -92,6 +110,12 @@
   </div>
   <div class="form-group">
     <textarea class="form-control" name="agentFriends" id="agentFriends" placeholder="Owner's Friend IDs (separated by dash)" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <textarea class="form-control" name="agentNeeds" id="agentNeeds" placeholder="Services Needed (separated by dash)" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <textarea class="form-control" name="agentOffers" id="agentOffers" placeholder="Services Offer (separated by dash)" rows="3"></textarea>
   </div>
 
 
@@ -132,7 +156,7 @@
 
 
 </form>
-
+</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="agentUploadSubmit">Upload</button>
@@ -141,6 +165,30 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="clearModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Clear All Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	<p>Are you sure to erase all agents data?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" id="deleteAll">Yes, purge them all</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 <script>
@@ -160,6 +208,21 @@ $(function() {
 			arr.push(Math.floor(Math.random() * 20) + 1);
 		}
 		$("#agentFriends").val(arr.join('-'));
+		arr = [];
+                var frNum = Math.floor(Math.random()*5);
+                for(var i=0;i<frNum;i++){
+                        arr.push(Math.floor(Math.random() * 20) + 1);
+                }
+                $("#agentNeeds").val(arr.join('-'));
+		arr = [];
+                var frNum = Math.floor(Math.random()*5);
+                for(var i=0;i<frNum;i++){
+                        arr.push(Math.floor(Math.random() * 20) + 1);
+                }
+                $("#agentOffers").val(arr.join('-'));
+
+
+
   	});
 
 	$("button#agentNewSubmit").click(function(){
@@ -173,6 +236,7 @@ $(function() {
 					// update graph
 					$('#newAgent')[0].reset();
 					$('#newNodeModal').modal('hide');
+					redrawAgents(msg.data);
 				}else{
 					alert(msg["message"]);
 				}
@@ -205,73 +269,102 @@ $(function() {
                         }
 		});
 	});
+
+
+	$("#refreshGraph").click(function(){
+		initCy();		
+	});
+
+        $("#layoutGraphCircle").click(function(){
+		curr_layout = "circle";
+                redrawAgentsCache();
+        });
+
+        $("#layoutGraphPredef").click(function(){
+		curr_layout = "preset";
+initCy();
+
+        });
+
+        $("#layoutGraphGrid").click(function(){
+		curr_layout = "grid";
+                redrawAgentsCache();
+        });
+        $("#layoutGraphRandom").click(function(){
+		curr_layout = "random";
+                redrawAgentsCache();
+        });
+
+
+
+
+
+
+
 });
 
 
 </script>
 
-    <script>
-        var cy = cytoscape({
-          container: document.getElementById('cy'),
-          elements: [
-            // nodes
-            { data: { id: 'a' } },
-            { data: { id: 'b' } },
-            { data: { id: 'c' } },
-            { data: { id: 'd' } },
-            { data: { id: 'e' } },
-            { data: { id: 'f' } },
-            // edges
-            {
-              data: {
-                id: 'ab',
-                source: 'a',
-                target: 'b'
-              }
-            },
-            {
-              data: {
-                id: 'cd',
-                source: 'c',
-                target: 'd'
-              }
-            },
-            {
-              data: {
-                id: 'ef',
-                source: 'e',
-                target: 'f'
-              }
-            },
-            {
-              data: {
-                id: 'ac',
-                source: 'a',
-                target: 'c'
-              }
-            },
-            {
-              data: {
-                id: 'be',
-                source: 'b',
-                target: 'e'
-              }
-            }
-          ],
-          style: [
+<script>
+var curr_layout = "preset";
+        var cy = window.cy = cytoscape({
+          container: document.getElementById('cy')
+        });
+
+initCy();
+
+    cy.on('tap', 'node', function (evt) {
+  console.log( 'tap ' + evt.target.id() );
+evt.target.connectedEdges().style( { 'line-color' : 'black' });
+    });
+
+
+function redrawAgentsCache(){
+  redrawAgents( cy.elements() );
+}
+
+function redrawAgents(newNodes){
+   cy.elements().remove();
+   cy.add(newNodes);
+   var layout = cy.layout({
+  	name: curr_layout
+   });
+   layout.run();
+   cy.style().fromJson( [
             {
               selector: 'node',
               style: {
-                shape: 'hexagon',
-                'background-color': 'red',
-                label: 'data(id)'
+                label: 'data(agentName)'
               }
-            }],
-          layout: {
-            name: 'grid'
-          }
-        });
-    
-    </script>
+            }]).update();
+}
+
+function initCy(){
+
+  $.ajax({
+    url: '/agents',
+    type: 'GET',
+    dataType: 'json',
+                        success: function(msg){
+                                if(msg["status"] == 1){
+                                        console.log(msg);
+                                        // update graph
+					redrawAgents(msg.data)
+
+                                }else{
+                                        alert(msg["message"]);
+                                }
+                        },
+                        error: function(){
+                                alert("failure");
+                        }
+  });
+}
+
+
+</script>
+
+
 </body>
 </html>

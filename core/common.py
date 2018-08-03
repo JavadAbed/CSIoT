@@ -223,14 +223,3 @@ def safe_fail(f, *args, **kwargs):
 def random_digits(digit_numbers):
     return ''.join(random.choice(string.digits) for _ in range(digit_numbers))
 
-def mask_phone(phone):
-    return phone[:4] + "*****" + phone[-3:]
-
-
-def check_password(password, hashed):
-    return hashed[:8] + hash(hashed[:8] + password) == hashed
-
-
-def build_password(password):
-    salt = random_digits(8)
-    return salt + hash(salt + password)
