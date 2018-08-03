@@ -1,4 +1,4 @@
 /core/config.py
 *.pyc
 __pycache__/
-
+server.log
