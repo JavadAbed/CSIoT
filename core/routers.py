@@ -1,7 +1,7 @@
 from flask import session, redirect, url_for, render_template
-from core import app,agent,auth
+from core import app,agent
 from core.common import WebException, error_get_message, WebSuccess
-from core.annotations import make_params, require_login, api_wrapper
+from core.annotations import make_params, api_wrapper
 
 
 

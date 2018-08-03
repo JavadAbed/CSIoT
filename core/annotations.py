@@ -9,7 +9,6 @@ from core.common import validate, flat_multi, error_get_message
 from datetime import datetime
 from functools import wraps
 from flask import session, request, abort, Response, redirect, url_for, render_template
-from core import auth
 
 
 
@@ -77,47 +76,6 @@ def api_wrapper(f):
     return wrapper
 
 
-def require_login(f):
-    """
-    Wraps routing functions that require a user to be logged in
-    """
-
-    @wraps(f)
-    def wrapper(*args, **kwds):
-        if not auth.is_logged_in():
-            raise WebException("You must be logged in")
-        return f(*args, **kwds)
-    return wrapper
-
-
-def check_csrf(f):
-    @wraps(f)
-    @require_login
-    def wrapper(*args, **kwds):
-        if 'token' not in session:
-            raise InternalException("CSRF token not in session")
-        if 'token' not in request.form:
-            raise InternalException("CSRF token not in form")
-        if session['token'] != request.form['token']:
-            raise InternalException("CSRF token is not correct")
-        return f(*args, **kwds)
-    return wrapper
-
-
-def require_admin(f):
-    """
-    Wraps routing functions that require a user to be an admin
-    """
-
-    @wraps(f)
-    def wrapper(*args, **kwds):
-        print("zzaa")
-        if not modules.auth.is_admin():
-            raise WebException("You must be an admin!")
-        print("qqqqq")
-        return f(*args, **kwds)
-    return wrapper
-
 def make_params(f):
     """
     Wraps routing functions that require a user to be an admin
@@ -128,23 +86,6 @@ def make_params(f):
         params = flat_multi(request.values)
         return f(params)
     return wrapper
-
-
-def transaction(db):
-    
-    def true_decorator(f):
-
-        @wraps(f)
-        def wrapper(*args, **kwds):
-            trans = db.session
-            try:
-                result = f(*args, **kwds)
-                trans.commit()
-                return result
-            except:
-                trans.rollback()
-                raise
-    return true_decorator
 
 
 def validation(schema): 
