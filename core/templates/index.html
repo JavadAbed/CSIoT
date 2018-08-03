@@ -5,11 +5,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
   <link href="/static/css/my.css" rel="stylesheet">
-
-
-    <script src='static/js/cytoscape.min.js'></script>
+    <script src="static/js/cytoscape.min.js"></script>
 </head>
 <body >
 
@@ -36,7 +33,7 @@
         </div>
 </li>      
 <li class="nav-item">
-              <a class="nav-link" id="refreshGraph" href="#">Refresh View</a>
+              <a class="nav-link" id="refreshGraph" href="#">Refresh</a>
 </li>
 
 <li class="nav-item dropdown">
@@ -50,7 +47,16 @@
               <a class="dropdown-item" id="layoutGraphRandom" href="#">Random</a>
 
         </div> </li>
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Simulation
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#simulationModal" href="#">Start Simulation</a>
+	      <a class="dropdown-item" id="layoutGraphGrid" href="#">Simulate 1 Step</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#simulationLogModal" href="#">Simulation Log</a>
 
+        </div> </li>
           </ul>
         </div>
       </nav>
@@ -72,8 +78,7 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="newNodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <!-- Modal --> <div class="modal fade" id="newNodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -151,7 +156,7 @@
 <div class="form-group">
     <label for="fileCSV">Data File (CSV format)</label>
     <input type="file" class="form-control-file" name="fileCSV" id="fileCSV" aria-describedby="fileCSV">
-    <small id="fileCSV" class="form-text text-muted">Upload a valid CSV file starting with this line:<br/>agent_name,owner_name,batch_number,family_member_id,x,y,friends</small>
+    <small id="fileCSV" class="form-text text-muted">Upload a valid CSV file starting with this line:<br/>agentName,agentOwner,agentBatch,agentFamily,agentX,agentY,agentFriends,agentNeeds,agentOffers</small>
   </div>
 
 
@@ -188,183 +193,6 @@
   </div>
 </div>
 
-
-
-
-<script>
-
-
-$(function() {
-	$("#agentRandom").click(function(){
-		$("#agentName").val(Math.floor(Math.random() * 10000) + 1);
-		$("#agentBatch").val(Math.floor(Math.random() * 100) + 1);
-		$("#agentOwner").val(Math.floor(Math.random() * 20) + 1);
-		$("#agentFamily").val(Math.floor(Math.random() * 10) + 1);
-		$("#agentX").val(Math.random().toFixed(6));
-		$("#agentY").val(Math.random().toFixed(6));
-		var arr = [];
-		var frNum = Math.floor(Math.random()*5);
-		for(var i=0;i<frNum;i++){
-			arr.push(Math.floor(Math.random() * 20) + 1);
-		}
-		$("#agentFriends").val(arr.join('-'));
-		arr = [];
-                var frNum = Math.floor(Math.random()*5);
-                for(var i=0;i<frNum;i++){
-                        arr.push(Math.floor(Math.random() * 20) + 1);
-                }
-                $("#agentNeeds").val(arr.join('-'));
-		arr = [];
-                var frNum = Math.floor(Math.random()*5);
-                for(var i=0;i<frNum;i++){
-                        arr.push(Math.floor(Math.random() * 20) + 1);
-                }
-                $("#agentOffers").val(arr.join('-'));
-
-
-
-  	});
-
-	$("button#agentNewSubmit").click(function(){
-        	$.ajax({
-     			type: "POST",
- 			url: "/newAgent",
- 			data: $('#newAgent').serialize(),
-         		success: function(msg){
-				if(msg["status"] == 1){
-					console.log(msg);
-					// update graph
-					$('#newAgent')[0].reset();
-					$('#newNodeModal').modal('hide');
-					redrawAgents(msg.data);
-				}else{
-					alert(msg["message"]);
-				}
-         		},
- 			error: function(){
- 				alert("failure");
- 			}
-       		});
- 	});
-
-	$("#agentUploadSubmit").click(function(){
-		var updata = new FormData();
-		updata.append('file', $('#fileCSV')[0].files[0]);
-		$.ajax({
-			type: "POST",
-			url: "/uploadAgent",
-			data: updata,
-			success: function(msg){
-                                if(msg["status"] == 1){
-                                        console.log(msg);
-                                        // update graph
-                                        $('#newAgent')[0].reset();
-                                        $('#newNodeModal').modal('hide');
-                                }else{
-                                        alert(msg["message"]);
-                                }
-                        },
-                        error: function(){
-                                alert("failure");
-                        }
-		});
-	});
-
-
-	$("#refreshGraph").click(function(){
-		initCy();		
-	});
-
-        $("#layoutGraphCircle").click(function(){
-		curr_layout = "circle";
-                redrawAgentsCache();
-        });
-
-        $("#layoutGraphPredef").click(function(){
-		curr_layout = "preset";
-initCy();
-
-        });
-
-        $("#layoutGraphGrid").click(function(){
-		curr_layout = "grid";
-                redrawAgentsCache();
-        });
-        $("#layoutGraphRandom").click(function(){
-		curr_layout = "random";
-                redrawAgentsCache();
-        });
-
-
-
-
-
-
-
-});
-
-
-</script>
-
-<script>
-var curr_layout = "preset";
-        var cy = window.cy = cytoscape({
-          container: document.getElementById('cy')
-        });
-
-initCy();
-
-    cy.on('tap', 'node', function (evt) {
-  console.log( 'tap ' + evt.target.id() );
-evt.target.connectedEdges().style( { 'line-color' : 'black' });
-    });
-
-
-function redrawAgentsCache(){
-  redrawAgents( cy.elements() );
-}
-
-function redrawAgents(newNodes){
-   cy.elements().remove();
-   cy.add(newNodes);
-   var layout = cy.layout({
-  	name: curr_layout
-   });
-   layout.run();
-   cy.style().fromJson( [
-            {
-              selector: 'node',
-              style: {
-                label: 'data(agentName)'
-              }
-            }]).update();
-}
-
-function initCy(){
-
-  $.ajax({
-    url: '/agents',
-    type: 'GET',
-    dataType: 'json',
-                        success: function(msg){
-                                if(msg["status"] == 1){
-                                        console.log(msg);
-                                        // update graph
-					redrawAgents(msg.data)
-
-                                }else{
-                                        alert(msg["message"]);
-                                }
-                        },
-                        error: function(){
-                                alert("failure");
-                        }
-  });
-}
-
-
-</script>
-
-
+    <script src="static/js/index.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import session, redirect, url_for, render_template
+from flask import session, redirect, url_for, render_template, Response
 from core import app,agent
 from core.common import WebException, error_get_message, WebSuccess
 from core.annotations import make_params, api_wrapper
@@ -32,10 +32,8 @@ def agents():
    return WebSuccess(data = agents);
 
 @app.route('/exportData', methods=['GET'])
-@api_wrapper
 def export_agents():
-   agents = agent.agents();
-   csv = agent.makeCSVString(agents)
+   csv = agent.makeCSVString()
    return Response(
         csv,
         mimetype="text/csv",
