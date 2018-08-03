@@ -1,0 +1,208 @@
+/** mini-clean-css **/
+p, h1, h2 {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ccc;
+}
+
+/********************/
+.case {
+  background-color: #fff;
+  width: 350px;
+  margin: 35px auto;
+  border: 2px solid;
+  padding: 50px 0px 70px 0;
+  border-radius: 25px;
+  position: relative;
+}
+
+.case:before {
+  content: "";
+  position: absolute;
+  border: 2px solid;
+  left: 50%;
+  width: 100px;
+  height: 3px;
+  border-radius: 25px;
+  margin-left: -50px;
+  top: 31px;
+}
+
+.case:after {
+  content: "";
+  position: absolute;
+  border: 2px solid;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: -25px;
+}
+
+.content {
+  background-color: #096087;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  width: 320px;
+  height: 480px;
+  margin: 15px auto;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #000;
+}
+
+.content:after {
+  content: "";
+  position: absolute;
+  height: 30px;
+  width: 100%;
+  background: linear-gradient(transparent, #096087);
+  z-index: 10;
+  bottom: 0px;
+}
+
+.screen {
+  padding: 15px;
+}
+.screen h1 {
+  font-weight: 300;
+  display: inline;
+}
+.screen h2 {
+  font-weight: 300;
+  display: inline;
+  float: right;
+  margin-top: 15px;
+  font-size: 20px;
+}
+
+.info .info-list {
+  overflow: hidden;
+  padding: 20px;
+}
+.info .info-list .info-sms {
+  float: right;
+}
+.info .info-list .info-calls {
+  float: left;
+}
+.info .info-list .info-list-item {
+  position: relative;
+  margin: 0 20px;
+}
+.info .info-list .info-list-item .info-number {
+  display: inline;
+  position: absolute;
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 2px;
+}
+.info .info-list .info-list-item .info-label {
+  display: inline;
+  font-size: 13px;
+}
+.info .info-list .info-list-item .fa {
+  color: #2F89AF;
+  font-size: 3em;
+  margin-right: 5px;
+}
+
+.time-line {
+  height: 80%;
+  width: 340px;
+}
+.time-line article {
+  height: 100%;
+  overflow: auto;
+}
+.time-line .time-line-list {
+  margin: 0 15px;
+  position: relative;
+}
+.time-line .time-line-list .time-line-list-item:first-child::before {
+  top: 10px;
+}
+.time-line .time-line-list .time-line-list-item::before {
+  content: "";
+  position: absolute;
+  left: 55px;
+  width: 15px;
+  height: 100%;
+  background-color: #186F96;
+  top: 0px;
+  z-index: -1;
+}
+.time-line .time-line-list .time-line-list-item {
+  overflow: hidden;
+  padding-bottom: 15px;
+  position: relative;
+  z-index: 3;
+}
+.time-line .time-line-list .time-line-list-item .time-line-structure {
+  float: left;
+}
+.time-line .time-line-list .time-line-list-item .time-line-clock .time-line-clock-text {
+  font-size: 14px;
+  font-weight: 400;
+  text-align: right;
+  line-height: 0.9;
+  margin: 12px 0;
+}
+.time-line .time-line-list .time-line-list-item .time-line-clock .time-line-clock-text span {
+  display: block;
+  font-size: 12px;
+  font-weight: 300;
+}
+.time-line .time-line-list .time-line-list-item .time-line-icon.call span {
+  font-size: 15px;
+  padding: 2px 6px;
+  margin: 0 1px;
+}
+.time-line .time-line-list .time-line-list-item .time-line-icon.message span {
+  font-size: 14px;
+  padding: 3px 6px;
+}
+.time-line .time-line-list .time-line-list-item .time-line-icon {
+  margin: 0 10px;
+}
+.time-line .time-line-list .time-line-list-item .time-line-icon span {
+  display: block;
+  border: 5px solid #2684AD;
+  border-radius: 50%;
+  background-color: #42ADDA;
+}
+.time-line .time-line-list .time-line-list-item .time-line-text::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: #42ADDA;
+  transform: rotate(45deg);
+  top: 10px;
+}
+.time-line .time-line-list .time-line-list-item .time-line-text {
+  position: relative;
+  background-color: #42ADDA;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 5px;
+  width: 60%;
+}
+.time-line .time-line-list .time-line-list-item .time-line-text .log-type {
+  font-size: 12px;
+}
+.time-line .time-line-list .time-line-list-item .time-line-text .contact-name {
+  font-weight: 400;
+  font-size: 20px;
+}

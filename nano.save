@@ -1,0 +1,44 @@
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND root 1 0.0 0.4 185316 5056 ?  Ss Jul10 0:16 /lib/systemd/systemd --system --deserialize 21 root 2 0.0 0.0 0 0 ?  S Jul10 0:00 
+[kthreadd] root 3 0.0 0.0 0 0 ?  S Jul10 0:05 [ksoftirqd/0] root 5 0.0 0.0 0 0 ?  S< Jul10 0:00 [kworker/0:0H] root 7 0.0 0.0 0 0 ?  S Jul10 4:26 [rcu_sched] root 8 0.0 0.0 0 0 ?  S 
+Jul10 0:00 [rcu_bh] root 9 0.0 0.0 0 0 ?  S Jul10 0:00 [migration/0] root 10 0.0 0.0 0 0 ?  S Jul10 0:06 [watchdog/0] root 11 0.0 0.0 0 0 ?  S Jul10 0:00 [kdevtmpfs] root 12 0.0 0.0 
+0 0 ?  S< Jul10 0:00 [netns] root 13 0.0 0.0 0 0 ?  S< Jul10 0:00 [perf] root 14 0.0 0.0 0 0 ?  S Jul10 0:00 [khungtaskd] root 15 0.0 0.0 0 0 ?  S< Jul10 0:00 [writeback] root 16 
+0.0 0.0 0 0 ?  SN Jul10 0:00 [ksmd] root 17 0.0 0.0 0 0 ?  SN Jul10 0:13 [khugepaged] root 18 0.0 0.0 0 0 ?  S< Jul10 0:00 [crypto] root 19 0.0 0.0 0 0 ?  S< Jul10 0:00 
+[kintegrityd] root 20 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 21 0.0 0.0 0 0 ?  S< Jul10 0:00 [kblockd] root 22 0.0 0.0 0 0 ?  S< Jul10 0:00 [ata_sff] root 23 0.0 0.0 0 0 ?  S< 
+Jul10 0:00 [md] root 24 0.0 0.0 0 0 ?  S< Jul10 0:00 [devfreq_wq] root 28 0.0 0.0 0 0 ?  S Jul10 0:02 [kswapd0] root 29 0.0 0.0 0 0 ?  S< Jul10 0:00 [vmstat] root 30 0.0 0.0 0 0 ?  
+S Jul10 0:00 [fsnotify_mark] root 31 0.0 0.0 0 0 ?  S Jul10 0:00 [ecryptfs-kthrea] root 47 0.0 0.0 0 0 ?  S< Jul10 0:00 [kthrotld] root 48 0.0 0.0 0 0 ?  S< Jul10 0:00 
+[acpi_thermal_pm] root 49 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 50 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 51 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 52 0.0 0.0 0 0 ?  S< 
+Jul10 0:00 [bioset] root 53 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 54 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 55 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 56 0.0 0.0 0 0 ?  
+S< Jul10 0:00 [bioset] root 57 0.0 0.0 0 0 ?  S Jul10 0:00 [scsi_eh_0] root 58 0.0 0.0 0 0 ?  S< Jul10 0:00 [scsi_tmf_0] root 59 0.0 0.0 0 0 ?  S Jul10 0:00 [scsi_eh_1] root 60 0.0 
+0.0 0 0 ?  S< Jul10 0:00 [scsi_tmf_1] root 66 0.0 0.0 0 0 ?  S< Jul10 0:00 [ipv6_addrconf] root 79 0.0 0.0 0 0 ?  S< Jul10 0:00 [deferwq] root 80 0.0 0.0 0 0 ?  S< Jul10 0:00 
+[charger_manager] root 81 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 132 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 133 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 134 0.0 0.0 0 0 ?  
+S< Jul10 0:00 [bioset] root 135 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 136 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 137 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 138 0.0 0.0 
+0 0 ?  S< Jul10 0:00 [bioset] root 139 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 141 0.0 0.0 0 0 ?  S< Jul10 0:00 [mpt_poll_0] root 142 0.0 0.0 0 0 ?  S< Jul10 0:00 [mpt/0] root 
+143 0.0 0.0 0 0 ?  S< Jul10 0:00 [kpsmoused] root 172 0.0 0.0 0 0 ?  S Jul10 0:00 [scsi_eh_2] root 173 0.0 0.0 0 0 ?  S< Jul10 0:00 [scsi_tmf_2] root 174 0.0 0.0 0 0 ?  S< Jul10 
+0:00 [bioset] root 176 0.0 0.0 0 0 ?  S< Jul10 0:00 [ttm_swap] root 259 0.0 0.0 0 0 ?  S< Jul10 0:00 [raid5wq] root 289 0.0 0.0 0 0 ?  S< Jul10 0:00 [bioset] root 314 0.0 0.0 0 0 ?  
+S< Jul10 0:04 [kworker/0:1H] root 317 0.0 0.0 0 0 ?  S Jul10 0:13 [jbd2/sda1-8] root 318 0.0 0.0 0 0 ?  S< Jul10 0:00 [ext4-rsv-conver] root 358 0.0 0.4 36952 4688 ?  Ss Jul10 0:14 
+/lib/systemd/systemd-journald root 405 0.0 0.0 0 0 ?  S Jul10 0:00 [kauditd] root 422 0.0 0.0 102968 872 ?  Ss Jul10 0:00 /sbin/lvmetad -f root 443 0.0 0.0 0 0 ?  S< Jul10 0:00 
+[iscsi_eh] root 559 0.0 0.0 0 0 ?  S< Jul10 0:00 [ib_addr] root 587 0.0 0.0 0 0 ?  S< Jul10 0:00 [ib_mcast] root 588 0.0 0.0 0 0 ?  S< Jul10 0:00 [ib_nl_sa_wq] root 590 0.0 0.0 0 0 
+?  S< Jul10 0:00 [ib_cm] root 591 0.0 0.0 0 0 ?  S< Jul10 0:00 [iw_cm_wq] root 615 0.0 0.0 0 0 ?  S< Jul10 0:00 [rdma_cm] root 857 0.0 0.0 0 0 ?  S Jul31 1:01 [kworker/0:4] syslog 
+926 0.0 0.3 256392 3512 ?  Ssl Jul10 0:13 /usr/sbin/rsyslogd -n root 930 0.0 0.2 29008 2348 ?  Ss Jul10 0:03 /usr/sbin/cron -f root 931 0.0 0.1 95368 1256 ?  Ssl Jul10 0:00 
+/usr/bin/lxcfs /var/lib/lxcfs/ root 932 0.0 0.6 191384 7068 ?  Ssl Jul10 19:16 /usr/bin/vmtoolsd root 939 0.0 0.1 4396 1168 ?  Ss Jul10 0:00 /usr/sbin/acpid message+ 940 0.0 0.3 
+42896 3108 ?  Ss Jul10 0:01 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation mysql 943 0.0 15.1 1109024 153944 ?  Ssl Jul31 1:14 
+/usr/sbin/mysqld daemon 952 0.0 0.1 26044 1952 ?  Ss Jul10 0:00 /usr/sbin/atd -f root 953 0.0 0.2 28656 2768 ?  Ss Jul10 0:01 /lib/systemd/systemd-logind root 1042 0.0 0.3 65508 
+3652 ?  Ss Jul10 0:00 /usr/sbin/sshd -D root 1045 0.0 0.0 13372 140 ?  Ss Jul10 0:00 /sbin/mdadm --monitor --pid-file /run/mdadm/monitor.pid --daemonise --scan --syslog bind 1046 
+0.0 0.6 209156 7060 ?  Ssl Jul10 0:00 /usr/sbin/named -f -u bind root 1063 0.0 0.0 5220 112 ?  Ss Jul10 0:32 /sbin/iscsid root 1064 0.0 0.3 5720 3516 ?  S<Ls Jul10 3:18 /sbin/iscsid 
+root 1123 0.0 0.1 15936 1468 tty1 Ss+ Jul10 0:00 /sbin/agetty --noclear tty1 linux root 1200 0.0 0.2 44124 2796 ?  Ss Jul16 0:01 /lib/systemd/systemd-udevd root 1379 0.0 2.8 305080 
+28676 ?  Ss Jul16 0:46 /usr/sbin/apache2 -k start root 3132 0.0 0.0 0 0 ?  S< Jul16 0:00 [xfsalloc] root 3133 0.0 0.0 0 0 ?  S< Jul16 0:00 [xfs_mru_cache] root 3139 0.0 0.0 0 0 ?  S 
+Jul16 0:00 [jfsIO] root 3141 0.0 0.0 0 0 ?  S Jul16 0:00 [jfsCommit] root 3142 0.0 0.0 0 0 ?  S Jul16 0:00 [jfsSync] www-data 6345 0.0 4.2 315968 42736 ?  S 06:25 0:01 
+/usr/sbin/apache2 -k start www-data 6643 0.0 3.9 311368 39772 ?  S 08:27 0:01 /usr/sbin/apache2 -k start www-data 6647 0.0 3.7 311424 37980 ?  S 08:29 0:01 /usr/sbin/apache2 -k 
+start www-data 7678 0.0 3.7 311352 38112 ?  S 15:43 0:01 /usr/sbin/apache2 -k start www-data 7679 0.0 3.8 313396 38664 ?  S 15:43 0:01 /usr/sbin/apache2 -k start www-data 7680 0.0 
+3.9 315128 40360 ?  S 15:43 0:01 /usr/sbin/apache2 -k start www-data 7823 0.0 3.9 313052 40116 ?  S 17:14 0:01 /usr/sbin/apache2 -k start www-data 7920 0.0 3.9 315308 40560 ?  S 
+18:21 0:01 /usr/sbin/apache2 -k start root 8061 0.0 0.0 0 0 ?  S 20:03 0:00 [kworker/u2:0] root 8150 0.0 0.6 92920 6976 ?  Ss 20:43 0:00 sshd: allsec [priv] allsec 8207 0.0 0.4 
+92920 4612 ?  S 20:44 0:01 sshd: allsec@pts/0 allsec 8212 0.0 0.3 21240 3792 pts/0 Ss 20:44 0:00 -bash allsec 8241 0.0 0.3 20836 3096 pts/0 S+ 20:45 0:00 tmux allsec 8242 0.0 0.3 
+21392 3956 pts/3 Ss 20:45 0:00 -bash www-data 8256 0.0 1.1 305444 11884 ?  S 20:56 0:00 /usr/sbin/apache2 -k start allsec 8278 0.0 0.3 45260 3736 ?  Ss Jul30 0:00 
+/lib/systemd/systemd --user allsec 8284 0.0 0.1 208544 1360 ?  S Jul30 0:00 (sd-pam) www-data 8495 0.0 0.7 305160 8044 ?  S 22:00 0:00 /usr/sbin/apache2 -k start root 8579 0.0 0.0 0 
+0 ?  S 22:18 0:00 [kworker/u2:2] allsec 8594 0.0 3.5 94792 36296 pts/2 S+ 22:22 0:00 python3 run.py allsec 8604 0.5 3.7 468056 37704 pts/2 Sl+ 22:24 0:18 /usr/bin/python3 run.py 
+root 8728 0.0 0.6 92832 6972 ?  Ss 23:13 0:00 sshd: allsec [priv] root 8731 0.0 0.0 0 0 ?  S 23:13 0:00 [kworker/0:0] allsec 8782 0.0 0.4 92832 4328 ?  S 23:13 0:00 sshd: 
+allsec@pts/4 allsec 8783 0.0 0.3 21244 3852 pts/4 Ss 23:13 0:00 -bash allsec 8793 0.0 0.1 20836 1216 pts/4 S+ 23:13 0:00 tmux attach root 8816 0.0 0.6 92832 6752 ?  Ss 23:21 0:00 
+sshd: allsec [priv] root 8819 0.0 0.0 0 0 ?  S 23:21 0:00 [kworker/0:1] allsec 8848 0.0 0.4 92832 4252 ?  S 23:21 0:00 sshd: allsec@pts/5 allsec 8849 0.0 0.3 21240 3668 pts/5 Ss 
+23:21 0:00 -bash allsec 8859 0.0 0.3 20836 3152 pts/5 S+ 23:22 0:00 tmux attach allsec 8860 0.0 0.3 37364 3352 pts/3 R+ 23:22 0:00 ps -aux allsec 8861 0.0 0.3 15320 3844 pts/3 R+ 
+23:22 0:00 nano root 22167 0.0 1.1 285452 11560 ?  Ssl Jul30 0:09 /usr/lib/snapd/snapd allsec 28948 0.0 0.4 30740 4480 ?  Ss Jul30 0:06 tmux allsec 28949 0.0 0.3 21476 4040 pts/1 
+Ss+ Jul30 0:00 -bash allsec 28963 0.0 0.3 21296 3896 pts/2 Ss Jul30 0:00 -bash systemd+ 32303 0.0 0.2 100324 2380 ?  Ssl Jul16 0:01 /lib/systemd/systemd-timesyncd

@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+<head>
+    <title>CSIoT</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+  <link href="/static/css/my.css" rel="stylesheet">
+
+
+    <script src='static/js/cytoscape.min.js'></script>
+</head>
+<body >
+
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">CSIoT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Agent
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#newNodeModal" href="#">New Agent</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#uploadNodeModal" href="#">Upload Agent Data</a>
+
+        </div>
+</li>
+
+
+
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+  
+ <div id="cy"></div>
+ 
+
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted"></span>
+      </div>
+    </footer>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="newNodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Agent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+<form id="newAgent">
+  <div class="form-group">
+        <input type="text" class="form-control" name="agentName" id="agentName" placeholder="Agent Name">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="agentBatch" id="agentBatch" placeholder="Batch Number">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="agentOwner" id="agentOwner" placeholder="Owner Name">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="agentFamily" id="agentFamily" placeholder="Family Member ID">
+  </div>
+  <div class="form-group row">
+    <div class="col">
+      <input type="text" class="form-control" name="agentX" id="agentX" placeholder="Cordinate X">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" name="agentY" id="agentY" placeholder="Cordinate Y">
+    </div>
+  </div>
+  <div class="form-group">
+    <textarea class="form-control" name="agentFriends" id="agentFriends" placeholder="Owner's Friend IDs (separated by dash)" rows="3"></textarea>
+  </div>
+
+
+</form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" id="agentRandom">Random</button>
+        <button type="button" class="btn btn-primary" id="agentNewSubmit">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="uploadNodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Agent Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+<form>
+
+<div class="form-group">
+    <label for="fileCSV">Data File (CSV format)</label>
+    <input type="file" class="form-control-file" name="fileCSV" id="fileCSV" aria-describedby="fileCSV">
+    <small id="fileCSV" class="form-text text-muted">Upload a valid CSV file starting with this line:<br/>agent_name,owner_name,batch_number,family_member_id,x,y,friends</small>
+  </div>
+
+
+</form>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="agentUploadSubmit">Upload</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+
+$(function() {
+	$("#agentRandom").click(function(){
+		$("#agentName").val(Math.floor(Math.random() * 10000) + 1);
+		$("#agentBatch").val(Math.floor(Math.random() * 100) + 1);
+		$("#agentOwner").val(Math.floor(Math.random() * 20) + 1);
+		$("#agentFamily").val(Math.floor(Math.random() * 10) + 1);
+		$("#agentX").val(Math.random().toFixed(6));
+		$("#agentY").val(Math.random().toFixed(6));
+		var arr = [];
+		var frNum = Math.floor(Math.random()*5);
+		for(var i=0;i<frNum;i++){
+			arr.push(Math.floor(Math.random() * 20) + 1);
+		}
+		$("#agentFriends").val(arr.join('-'));
+  	});
+
+	$("button#agentNewSubmit").click(function(){
+        	$.ajax({
+     			type: "POST",
+ 			url: "/newAgent",
+ 			data: $('#newAgent').serialize(),
+         		success: function(msg){
+				if(msg["status"] == 1){
+					console.log(msg);
+					// update graph
+					$('#newAgent')[0].reset();
+					$('#newNodeModal').modal('hide');
+				}else{
+					alert(msg["message"]);
+				}
+         		},
+ 			error: function(){
+ 				alert("failure");
+ 			}
+       		});
+ 	});
+
+	$("#agentUploadSubmit").click(function(){
+		var updata = new FormData();
+		updata.append('file', $('#fileCSV')[0].files[0]);
+		$.ajax({
+			type: "POST",
+			url: "/uploadAgent",
+			data: updata,
+			success: function(msg){
+                                if(msg["status"] == 1){
+                                        console.log(msg);
+                                        // update graph
+                                        $('#newAgent')[0].reset();
+                                        $('#newNodeModal').modal('hide');
+                                }else{
+                                        alert(msg["message"]);
+                                }
+                        },
+                        error: function(){
+                                alert("failure");
+                        }
+		});
+	});
+});
+
+
+</script>
+
+    <script>
+        var cy = cytoscape({
+          container: document.getElementById('cy'),
+          elements: [
+            // nodes
+            { data: { id: 'a' } },
+            { data: { id: 'b' } },
+            { data: { id: 'c' } },
+            { data: { id: 'd' } },
+            { data: { id: 'e' } },
+            { data: { id: 'f' } },
+            // edges
+            {
+              data: {
+                id: 'ab',
+                source: 'a',
+                target: 'b'
+              }
+            },
+            {
+              data: {
+                id: 'cd',
+                source: 'c',
+                target: 'd'
+              }
+            },
+            {
+              data: {
+                id: 'ef',
+                source: 'e',
+                target: 'f'
+              }
+            },
+            {
+              data: {
+                id: 'ac',
+                source: 'a',
+                target: 'c'
+              }
+            },
+            {
+              data: {
+                id: 'be',
+                source: 'b',
+                target: 'e'
+              }
+            }
+          ],
+          style: [
+            {
+              selector: 'node',
+              style: {
+                shape: 'hexagon',
+                'background-color': 'red',
+                label: 'data(id)'
+              }
+            }],
+          layout: {
+            name: 'grid'
+          }
+        });
+    
+    </script>
+</body>
+</html>

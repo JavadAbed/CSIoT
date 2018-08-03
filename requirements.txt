@@ -1,0 +1,10 @@
+Flask
+py3k-bcrypt
+pymongo
+pymysql
+flask-sqlalchemy
+SQLAlchemy
+SQLAlchemy-Utils
+Flask-Migrate
+voluptuous
+flask_script
