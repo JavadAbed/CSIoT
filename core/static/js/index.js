@@ -1,37 +1,30 @@
 $(function() {
     $("#agentRandom").click(function() {
         $("#agentName").val(Math.floor(Math.random() * 10000) + 1);
-        $("#agentBatch").val(Math.floor(Math.random() * 100) + 1);
-        $("#agentOwner").val(Math.floor(Math.random() * 20) + 1);
-        $("#agentFamily").val(Math.floor(Math.random() * 10) + 1);
-        $("#agentX").val(Math.random().toFixed(6));
-        $("#agentY").val(Math.random().toFixed(6));
+        $("#agentBatch").val(Math.floor(Math.random() * 10000) + 1);
+        $("#agentOwner").val(Math.floor(Math.random() * 100) + 1);
+        //$("#agentX").val(Math.random().toFixed(6));
+        //$("#agentY").val(Math.random().toFixed(6));
+        $("#agentX").val(Math.floor(Math.random() * 2000) + 1);
+        $("#agentY").val(Math.floor(Math.random() * 2000) + 1);
         var arr = [];
-        var frNum = Math.floor(Math.random() * 5);
+        var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
-            arr.push(Math.floor(Math.random() * 20) + 1);
+            arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentFriends").val(arr.join('-'));
+        $("#agentFriendsH").val(arr.join('-'));
         arr = [];
-        var frNum = Math.floor(Math.random() * 5);
+        var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
-            arr.push(Math.floor(Math.random() * 20) + 1);
+            arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentNeeds").val(arr.join('-'));
+        $("#agentFriendsM").val(arr.join('-'));
         arr = [];
-        var frNum = Math.floor(Math.random() * 5);
+        var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
-            arr.push(Math.floor(Math.random() * 20) + 1);
+            arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentNeeds").val(arr.join('-'));
-        arr = [];
-        var frNum = Math.floor(Math.random() * 5);
-        for (var i = 0; i < frNum; i++) {
-            arr.push(Math.floor(Math.random() * 20) + 1);
-        }
-        $("#agentOffers").val(arr.join('-'));
-
-
+        $("#agentFriendsL").val(arr.join('-'));
 
     });
 

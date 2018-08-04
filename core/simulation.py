@@ -16,7 +16,7 @@ def simulate_one_step(current_ts):
        if node1 == node2:
           break
        # if there is a message j->i at t-1 then respond
-       for msg in db.messages.find({"from":node1["agentName"],"to":node2["agentName"],"is_reply":0,"ts":current_ts-1}):
+       for msg in db.messages.find({"from":node2["agentName"],"to":node1["agentName"],"ts":current_ts-1}):
           reply_msg(msg, current_ts, node1, node2)
        friendship = is_friend(node1,node2)
        if friendship is not None:
