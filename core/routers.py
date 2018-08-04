@@ -47,3 +47,14 @@ def start_simulation(params):
     simulation.start(params)
     agents = agent.agents();
     return WebSuccess(data = agents);
+
+
+
+@app.route('/deleteAll', methods=['POST'])
+@api_wrapper
+def delete_all():
+    agent.deleteAll();
+    agents = agent.agents();
+    return WebSuccess(data = agents);
+
+

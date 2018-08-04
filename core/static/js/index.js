@@ -76,6 +76,26 @@ $(function() {
         });
     });
 
+
+    $("button#deleteAll").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/deleteAll",
+            data: "",
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    $('#clearModal').modal('hide'); 
+                    redrawAgents(msg.data);
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
+    });
+
     $("button#simulation1Step").click(function() {
         $.ajax({
             type: "POST",
@@ -174,8 +194,8 @@ function redrawAgents(newNodes) {
     cy.style().fromJson([{
         selector: 'node',
         style: {
-            shape: 'data(shape)',
-            label: 'data(agentName)'
+            shape: 'ellipse',
+            label: 'data(name)'
         }
     }]).update();
 }

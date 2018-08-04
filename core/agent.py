@@ -8,17 +8,31 @@ from random import *
 def new_agent(params):
   db = get_conn()
   # validate, agent name must be uniq
-  old = db.agents.find({"agentName": params["agentName"]})
+  old = db.agents.find({"name": params["agentName"]})
   if old.count()>0:
      raise WebException("Agent with identical name already exists.")
   # TODO more validations
-  params["agentQoI"] = randint(0,10)
-  params["agentQoD"] = randint(0,10)
-  params["agentAvailability"] = randint(0,10)
-  params["agentQoS"] = randint(0,10)
-  db.agents.insert(params)
+
+  agent ={
+    "name": params["agentName"],
+    "owner": params["agentOwner"],
+    "batch": params["agentBatch"],
+    "x": params["agentX"],
+    "y": params["agentY"],
+    "friends_h": params["agentFriendsH"].split('-'),
+    "friends_m": params["agentFriendsM"].split('-'),
+    "friends_l": params["agentFriendsL"].split('-'),
+    "QoI" : randint(0,10),
+    "QoD" : randint(0,10),
+    "QoS" : randint(0,10),
+    "Availability" : randint(0,10)
+  }
+  db.agents.insert(agent)
   return agents()
 
+def deleteAll():
+   db = get_conn()
+   db.agents.delete_many({})
 
 def upload_agent(file):
   in_memory_file = io.BytesIO()
@@ -29,22 +43,17 @@ def upload_agent(file):
   pass#TODO
 
 
-def getShape(batchId):
-  return "ellipse";
-
 def agents():
   db = get_conn()
   agents = db.agents.find()
   data = []
   for agent in agents:
-     data.append({"data": {"agentName": agent["agentName"],
-			"shape": getShape(agent["agentBatch"]),
-		},
-		"position": {"x": float(agent["agentX"])*2000,"y":float(agent["agentY"])*2000 }    })
+     data.append({"data": {"name": agent["name"]},
+		"position": {"x": float(agent["x"]),"y":float(agent["y"]) }    })
   return data
 
 def makeCSVString():
-   db = get_conn()
+   db = get_conn() # TODO update 
    agents = db.agents.find()
    output = io.StringIO()
    spamwriter = csv.writer(output)
