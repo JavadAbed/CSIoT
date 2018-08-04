@@ -1,5 +1,5 @@
-from flask import session, redirect, url_for, render_template, Response
-from core import app,agent
+from flask import session, redirect, url_for, render_template, Response, request
+from core import app,agent,simulation
 from core.common import WebException, error_get_message, WebSuccess
 from core.annotations import make_params, api_wrapper
 
@@ -40,3 +40,10 @@ def export_agents():
         headers={"Content-disposition":
                  "attachment; filename=agents.csv"})
 
+@app.route('/startSimulation', methods=['POST'])
+@api_wrapper
+@make_params
+def start_simulation(params):
+    simulation.start(params)
+    agents = agent.agents();
+    return WebSuccess(data = agents);

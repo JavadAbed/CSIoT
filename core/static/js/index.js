@@ -58,10 +58,13 @@ $(function() {
     });
 
     $("#agentUploadSubmit").click(function() {
-        var updata = new FormData();
+        var updata = new FormData();    //$('#uploading')[0]);
         updata.append('file', $('#fileCSV')[0].files[0]);
         $.ajax({
             type: "POST",
+            processData: false,
+            contentType: false,
+            cache: false,
             url: "/uploadAgent",
             data: updata,
             success: function(msg) {
@@ -80,6 +83,46 @@ $(function() {
         });
     });
 
+    $("button#simulation1Step").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/startSimulation",
+            data: "numberOfSteps=1",
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    redrawAgents(msg.data);
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
+    });
+
+    $("button#btnStartSimulation").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/startSimulation",
+            data: $('#formStartSimulation').serialize(),
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    $('#simulationModal').modal('hide');
+                    redrawAgents(msg.data);
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
+    });
+
+    $("#simulationLogModal").on('shown.bs.modal', function() {
+	console.log("logs opened");
+    });
 
     $("#refreshGraph").click(function() {
         initCy();

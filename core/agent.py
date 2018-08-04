@@ -1,4 +1,6 @@
 import pymongo
+import csv
+import io
 from core.common import get_conn
 from core.common import  WebException
 
@@ -15,6 +17,12 @@ def new_agent(params):
 
 
 def upload_agent(file):
+  in_memory_file = io.BytesIO()
+  file.save(in_memory_file)
+  reader = csv.reader(file)
+  print("SSSSSSSSSS")
+  for row in reader:
+     print(row)
   pass
 
 
@@ -55,9 +63,6 @@ def agents():
   return data
 
 def makeCSVString():
-   import csv
-   import io
-
    db = get_conn()
    agents = db.agents.find()
  
