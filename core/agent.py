@@ -12,10 +12,10 @@ def new_agent(params):
   if old.count()>0:
      raise WebException("Agent with identical name already exists.")
   # TODO more validations
-  params["agentQoI"] = randint(1,5)
-  params["agentQoD"] = randint(1,5)
-  params["agentAvailability"] = randint(1,5)
-  params["agentQoS"] = randint(1,5)
+  params["agentQoI"] = randint(0,10)
+  params["agentQoD"] = randint(0,10
+  params["agentAvailability"] = randint(0,10)
+  params["agentQoS"] = randint(0,10)
   db.agents.insert(params)
   return agents()
 
