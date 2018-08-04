@@ -16,7 +16,7 @@ def simulate_one_step(current_ts):
        if node1 == node2:
           break
        # if there is a message j->i at t-1 then respond
-       for msg in db.messages.find({"from":node1["agentName"],"to":node2["agentName"],"replied":0}):
+       for msg in db.messages.find({"from":node1["agentName"],"to":node2["agentName"],"is_reply":0,"ts":current_ts-1}):
           reply_msg(msg, current_ts, node1, node2)
        friendship = is_friend(node1,node2)
        if friendship is not None:
@@ -55,7 +55,7 @@ def distance(node1,node2):
 
 def send_mag(current_ts,node1,node2,msg_type,is_reply):
    db = get_conn()
-   db.messages.insert({"from":node1["agentName"],"to":node2["agentName"],"replied":is_reply,"ts":current_ts,"msg_type":msg_type})
+   db.messages.insert({"from":node1["agentName"],"to":node2["agentName"],"is_reply":is_reply,"ts":current_ts,"msg_type":msg_type})
 
 def change_friendship_level(current_ts,node1,node2,friendship):
    pass
