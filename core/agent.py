@@ -47,11 +47,25 @@ def upload_agent(file):
 
 def agents():
   db = get_conn()
-  agents = db.agents.find()
+  agents = list(db.agents.find())
   data = []
   for agent in agents:
-     data.append({"data": {"name": agent["name"]},
+     data.append({"data": {"id": agent["name"]},
 		"position": {"x": agent["x"],"y":agent["y"] }    })
+     for fshipk,fshipv in agent["friendships"].items():
+         # average:
+         skip_me = False
+         for d in data:
+             if d["data"].get("source") == fshipk and d["data"].get("target") == agent["name"]:
+                skip_me = True
+                break
+         if skip_me:
+             continue
+         for agent2 in agents:
+             if agent2["name"] == fshipk:
+                score2 = agent2["friendships"][agent["name"]]["strength"]
+         # 
+         data.append({"data":{"id": agent["name"]+"-"+fshipk ,"source":agent["name"], "target":fshipk, "strength": (int(fshipv["strength"])+int(score2)) / 2 }})
   return data
 
 def makeCSVString():

@@ -196,9 +196,15 @@ function redrawAgents(newNodes) {
         selector: 'node',
         style: {
             shape: 'ellipse',
-            label: 'data(name)'
+            label: 'data(id)'
         }
-    }]).update();
+    },{
+        selector: 'edge',
+        style: {
+           label: 'data(strength)',
+           width: 'data(strength)'
+        }
+      }]).update();
 }
 
 function initCy() {
