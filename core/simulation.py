@@ -37,9 +37,26 @@ def find_ts():
 
 def reply_msg(msg, current_ts, node1, node2):
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_INIT:
-      if node1["owner"] == node2["owner"] or node1["batch"] == node2["batch"] or distance(node1,node2) < node1["locality"]:
+      msg = []
+      if node1["owner"] == node2["owner"]:
+         msg.append( "owner" )
+      if  node1["batch"] == node2["batch"]:
+         msg.append( "batch" )
+      if distance(node1,node2) < node1["locality"]:
+         msg.append( "distance" )
+      if len(msg)>0:
           send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_ACCEPTED)
-          start_friendship(current_ts, node1, node2)
+          start_friendship(current_ts, node1, node2,"|".join(msg))
+   if msg["msg_type"] == MESSAGE_FRIENDSHIP_ACCEPTED:
+      msg = []
+      if node1["owner"] == node2["owner"]:
+         msg.append( "owner" )
+      if  node1["batch"] == node2["batch"]:
+         msg.append( "batch" )
+      if distance(node1,node2) < node1["locality"]:
+         msg.append( "distance" )
+      if len(msg)>0:
+          start_friendship(current_ts, node1, node2,"|".join(msg))
 
 def is_friend(node1,node2):
    fs = node1.get("friendships")
@@ -48,30 +65,48 @@ def is_friend(node1,node2):
    return fs.get(node2["name"]) is not None
 
 def trying_frienship(current_ts,node1,node2):
-   if node1["owner"] == node2["owner"] or node1["batch"] == node2["batch"] or distance(node1,node2) < node1["locality"]:
-     send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_INIT)
+   msg = []
+   if node1["owner"] == node2["owner"]:
+      msg.append( "owner" )
+   if  node1["batch"] == node2["batch"]:
+      msg.append( "batch" )
+   if distance(node1,node2) < node1["locality"]:
+      msg.append( "distance" )
+
+   if len(msg)>0:
+     send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_INIT,"|".join(msg))
+
+
 
 def distance(node1,node2):
    return  math.sqrt( (node1["x"] - node2["x"])**2 + (node1["y"] - node2["y"])**2 )
 
-def send_msg(current_ts,node1,node2,msg_type):
+def send_msg(current_ts,node1,node2,msg_type,extra):
    db = get_conn()
-   db.messages.insert({"from":node1["name"],"to":node2["name"],"ts":current_ts,"msg_type":msg_type})
+   db.messages.insert({"from":node1["name"],"to":node2["name"],"ts":current_ts,"msg_type":msg_type,"extra":extra})
 
 def change_friendship_level(current_ts,node1,node2):
-   for friendship in node1.friendships:
-       if friendship["name"] == node2["name"]:
-           if friendship["ts_start"] - current_ts > 30:
-               if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] > 20:
-                    # increase
-                    pass
-               else:
-                    # decrease
-                    pass
-
+   fship = node1.friendships.get(node2["name"])
+   if fship is not None:
+       if fship["ts_start"] - current_ts > 30:
+           if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] > 20:
+               update_friendship_strength(node1,node2["name"],ship["strength"] +1 )
+           else:
+               update_friendship_strength(node1,node2["name"],ship["strength"] -1 )
 
 def start_friendship(current_ts, node1, node2):
    if not is_friend(node1,node2):
       db = get_conn()
       db.agents.find_one_and_update({"_id":node1["_id"]},
 		{"$set":{ "friendships."+ node2["name"]:  {"ts_start":current_ts,"strength":1}}})
+
+def update_friendship_strength(node1,node2_name,strength):
+   if strength > 5:
+      return
+   db = get_conn()
+   if strength == 0:
+      # terminate friendship
+      db.agents.find_one_and_update({"name":node1["name"]},{"$unset":{"friendships."+node2_name : ""}})
+   else:
+      # update friendship
+      db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2_name+".strength" : strength}})
