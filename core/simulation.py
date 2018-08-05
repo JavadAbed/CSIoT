@@ -3,6 +3,8 @@ import math
 
 MESSAGE_FRIENDSHIP_INIT = 100
 MESSAGE_FRIENDSHIP_ACCEPTED = 101
+MESSAGE_FRIENDSHIP_TERMINATE = 102
+
 
 def start(params):
    for i in range(int(params["numberOfSteps"])):
@@ -57,6 +59,9 @@ def reply_msg(msg, current_ts, node1, node2):
          msg.append( "distance" )
       if len(msg)>0:
           start_friendship(current_ts, node1, node2,"|".join(msg))
+   if msg["msg_type"] == MESSAGE_FRIENDSHIP_TERMINATE:
+      terminate_friendship(node1, node2)
+
 
 def is_friend(node1,node2):
    fs = node1.get("friendships")
@@ -76,8 +81,6 @@ def trying_frienship(current_ts,node1,node2):
    if len(msg)>0:
      send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_INIT,"|".join(msg))
 
-
-
 def distance(node1,node2):
    return  math.sqrt( (node1["x"] - node2["x"])**2 + (node1["y"] - node2["y"])**2 )
 
@@ -90,9 +93,9 @@ def change_friendship_level(current_ts,node1,node2):
    if fship is not None:
        if fship["ts_start"] - current_ts > 30:
            if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] > 20:
-               update_friendship_strength(node1,node2["name"],ship["strength"] +1 )
+               update_friendship_strength(current_ts,node1,node2,ship["strength"] +1 )
            else:
-               update_friendship_strength(node1,node2["name"],ship["strength"] -1 )
+               update_friendship_strength(current_ts,node1,node2,ship["strength"] -1 )
 
 def start_friendship(current_ts, node1, node2):
    if not is_friend(node1,node2):
@@ -100,13 +103,18 @@ def start_friendship(current_ts, node1, node2):
       db.agents.find_one_and_update({"_id":node1["_id"]},
 		{"$set":{ "friendships."+ node2["name"]:  {"ts_start":current_ts,"strength":1}}})
 
-def update_friendship_strength(node1,node2_name,strength):
+def update_friendship_strength(current_ts,node1,node2,strength):
    if strength > 5:
       return
    db = get_conn()
    if strength == 0:
       # terminate friendship
-      db.agents.find_one_and_update({"name":node1["name"]},{"$unset":{"friendships."+node2_name : ""}})
+      terminate_friendship(node1,node2)
+      send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_TERMINATE,"")
    else:
       # update friendship
-      db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2_name+".strength" : strength}})
+      db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2["name"]+".strength" : strength}})
+
+def terminate_friendship(node1, node2):
+    db = get_conn()
+    db.agents.find_one_and_update({"name":node1["name"]},{"$unset":{"friendships."+node2["name"] : ""}})
