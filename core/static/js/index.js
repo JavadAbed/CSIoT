@@ -3,6 +3,7 @@ $(function() {
         $("#agentName").val(Math.floor(Math.random() * 10000) + 1);
         $("#agentBatch").val(Math.floor(Math.random() * 10000) + 1);
         $("#agentOwner").val(Math.floor(Math.random() * 100) + 1);
+        $("#agentLocality").val(10* Math.floor(Math.random() * 15) + 20);
         //$("#agentX").val(Math.random().toFixed(6));
         //$("#agentY").val(Math.random().toFixed(6));
         $("#agentX").val(Math.floor(Math.random() * 2000) + 1);
@@ -96,7 +97,7 @@ $(function() {
         });
     });
 
-    $("button#simulation1Step").click(function() {
+    $("#simulation1Step").click(function() {
         $.ajax({
             type: "POST",
             url: "/startSimulation",

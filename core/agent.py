@@ -17,15 +17,17 @@ def new_agent(params):
     "name": params["agentName"],
     "owner": params["agentOwner"],
     "batch": params["agentBatch"],
-    "x": params["agentX"],
-    "y": params["agentY"],
+    "locality": float(params["agentLocality"]),
+    "x": float( params["agentX"]),
+    "y": float(params["agentY"]),
     "friends_h": params["agentFriendsH"].split('-'),
     "friends_m": params["agentFriendsM"].split('-'),
     "friends_l": params["agentFriendsL"].split('-'),
-    "QoI" : randint(0,10),
-    "QoD" : randint(0,10),
-    "QoS" : randint(0,10),
-    "Availability" : randint(0,10)
+    "qoi" : randint(0,10),
+    "qod" : randint(0,10),
+    "qos" : randint(0,10),
+    "availability" : randint(0,10),
+    "friendships": {}
   }
   db.agents.insert(agent)
   return agents()
@@ -49,7 +51,7 @@ def agents():
   data = []
   for agent in agents:
      data.append({"data": {"name": agent["name"]},
-		"position": {"x": float(agent["x"]),"y":float(agent["y"]) }    })
+		"position": {"x": agent["x"],"y":agent["y"] }    })
   return data
 
 def makeCSVString():

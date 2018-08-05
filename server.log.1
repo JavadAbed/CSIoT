@@ -1,0 +1,174 @@
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 10, in start
+    simulate_one_step(current_ts+i)
+  File "/home/allsec/CSIoT/core/simulation.py", line 13, in simulate_one_step
+    nodes = db.agents.find()
+NameError: name 'db' is not defined
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 12, in start
+    simulate_one_step(current_ts+i)
+  File "/home/allsec/CSIoT/core/simulation.py", line 17, in simulate_one_step
+    nodes = db.agents.find()
+NameError: name 'db' is not defined
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 12, in start
+    simulate_one_step(current_ts+i)
+  File "/home/allsec/CSIoT/core/simulation.py", line 27, in simulate_one_step
+    if is_friend(node1,node2):
+  File "/home/allsec/CSIoT/core/simulation.py", line 55, in is_friend
+    for friendship in node1.friendships:
+AttributeError: 'dict' object has no attribute 'friendships'
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 12, in start
+    simulate_one_step(current_ts+i)
+  File "/home/allsec/CSIoT/core/simulation.py", line 27, in simulate_one_step
+    if is_friend(node1,node2):
+  File "/home/allsec/CSIoT/core/simulation.py", line 55, in is_friend
+    for friendship in node1.get("friendships"):
+TypeError: 'NoneType' object is not iterable
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 12, in start
+    simulate_one_step(current_ts+i)
+  File "/home/allsec/CSIoT/core/simulation.py", line 32, in simulate_one_step
+    trying_frienship(current_ts,node1,node2)
+  File "/home/allsec/CSIoT/core/simulation.py", line 65, in trying_frienship
+    if node1["owner"] == node2["owner"] or node1["batch"] == node2["batch"] or distance(node1,node2) < node1["locality"]:
+  File "/home/allsec/CSIoT/core/simulation.py", line 71, in distance
+    return  math.sqrt( (node1["x"] - node2["x"])**2 + (node1["y"] - node2["y"])**2 )
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 15, in new_agent
+    data = agent.new_agent(params);
+  File "/home/allsec/CSIoT/core/agent.py", line 20, in new_agent
+    "locality": double(params["agentLocality"]),
+NameError: name 'double' is not defined
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 9, in start
+    current_ts = find_ts()
+  File "/home/allsec/CSIoT/core/simulation.py", line 41, in find_ts
+    current_ts = lastmsg["ts"]
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/cursor.py", line 614, in __getitem__
+    "instances" % index)
+TypeError: index 'ts' cannot be applied to Cursor instances
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 10, in start
+    current_ts =find_ts()
+  File "/home/allsec/CSIoT/core/simulation.py", line 43, in find_ts
+    db.vars.update({"$inc":"ts"})
+TypeError: update() missing 1 required positional argument: 'document'
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 10, in start
+    current_ts =find_ts()
+  File "/home/allsec/CSIoT/core/simulation.py", line 43, in find_ts
+    db.vars.find_one_and_update({},{"$inc":"ts"})
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 3115, in find_one_and_update
+    array_filters, session=session, **kwargs)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 2872, in __find_and_modify
+    write_concern.acknowledged, _find_and_modify, session)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/mongo_client.py", line 1243, in _retryable_write
+    return self._retry_with_session(retryable, func, s, None)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/mongo_client.py", line 1196, in _retry_with_session
+    return func(session, sock_info, retryable)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 2867, in _find_and_modify
+    retryable_write=retryable_write)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 244, in _command
+    retryable_write=retryable_write)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/pool.py", line 579, in command
+    unacknowledged=unacknowledged)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/network.py", line 150, in command
+    parse_write_concern_error=parse_write_concern_error)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/helpers.py", line 155, in _check_command_response
+    raise OperationFailure(msg % errmsg, code, response)
+pymongo.errors.OperationFailure: exception: Modifiers operate on fields but we found a String instead. For example: {$mod: {<field>: ...}} not {$inc: "ts"}
+
+Traceback (most recent call last):
+  File "/home/allsec/CSIoT/core/annotations.py", line 56, in wrapper
+    web_result = f(*args, **kwds)
+  File "/home/allsec/CSIoT/core/annotations.py", line 87, in wrapper
+    return f(params)
+  File "/home/allsec/CSIoT/core/routers.py", line 47, in start_simulation
+    simulation.start(params)
+  File "/home/allsec/CSIoT/core/simulation.py", line 10, in start
+    current_ts =find_ts()
+  File "/home/allsec/CSIoT/core/simulation.py", line 43, in find_ts
+    db.vars.find_one_and_update({},{"$inc":"ts"})
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 3115, in find_one_and_update
+    array_filters, session=session, **kwargs)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 2872, in __find_and_modify
+    write_concern.acknowledged, _find_and_modify, session)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/mongo_client.py", line 1243, in _retryable_write
+    return self._retry_with_session(retryable, func, s, None)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/mongo_client.py", line 1196, in _retry_with_session
+    return func(session, sock_info, retryable)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 2867, in _find_and_modify
+    retryable_write=retryable_write)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/collection.py", line 244, in _command
+    retryable_write=retryable_write)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/pool.py", line 579, in command
+    unacknowledged=unacknowledged)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/network.py", line 150, in command
+    parse_write_concern_error=parse_write_concern_error)
+  File "/usr/local/lib/python3.5/dist-packages/pymongo/helpers.py", line 155, in _check_command_response
+    raise OperationFailure(msg % errmsg, code, response)
+pymongo.errors.OperationFailure: exception: Modifiers operate on fields but we found a String instead. For example: {$mod: {<field>: ...}} not {$inc: "ts"}
+
