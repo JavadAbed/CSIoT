@@ -39,26 +39,18 @@ def find_ts():
 
 def reply_msg(msg, current_ts, node1, node2):
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_INIT:
-      msg = []
+      mm = []
       if node1["owner"] == node2["owner"]:
-         msg.append( "owner" )
+         mm.append( "owner" )
       if  node1["batch"] == node2["batch"]:
-         msg.append( "batch" )
+         mm.append( "batch" )
       if distance(node1,node2) < node1["locality"]:
-         msg.append( "distance" )
-      if len(msg)>0:
-          send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_ACCEPTED)
-          start_friendship(current_ts, node1, node2,"|".join(msg))
+         mm.append( "distance" )
+      if len(mm)>0:
+          send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_ACCEPTED,"|".join(mm))
+          start_friendship(current_ts, node1, node2)
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_ACCEPTED:
-      msg = []
-      if node1["owner"] == node2["owner"]:
-         msg.append( "owner" )
-      if  node1["batch"] == node2["batch"]:
-         msg.append( "batch" )
-      if distance(node1,node2) < node1["locality"]:
-         msg.append( "distance" )
-      if len(msg)>0:
-          start_friendship(current_ts, node1, node2,"|".join(msg))
+      start_friendship(current_ts, node1, node2)
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_TERMINATE:
       terminate_friendship(node1, node2)
 
@@ -89,7 +81,7 @@ def send_msg(current_ts,node1,node2,msg_type,extra):
    db.messages.insert({"from":node1["name"],"to":node2["name"],"ts":current_ts,"msg_type":msg_type,"extra":extra})
 
 def change_friendship_level(current_ts,node1,node2):
-   fship = node1.friendships.get(node2["name"])
+   fship = node1["friendships"].get(node2["name"])
    if fship is not None:
        if fship["ts_start"] - current_ts > 30:
            if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] > 20:
