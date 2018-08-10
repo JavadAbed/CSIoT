@@ -4,8 +4,6 @@ $(function() {
         $("#agentBatch").val(Math.floor(Math.random() * 10000) + 1);
         $("#agentOwner").val(Math.floor(Math.random() * 100) + 1);
         $("#agentLocality").val(10* Math.floor(Math.random() * 15) + 20);
-        //$("#agentX").val(Math.random().toFixed(6));
-        //$("#agentY").val(Math.random().toFixed(6));
         $("#agentX").val(Math.floor(Math.random() * 2000) + 1);
         $("#agentY").val(Math.floor(Math.random() * 2000) + 1);
         var arr = [];
@@ -52,7 +50,7 @@ $(function() {
     });
 
     $("#agentUploadSubmit").click(function() {
-        var updata = new FormData();    //$('#uploading')[0]);
+        var updata = new FormData();
         updata.append('file', $('#fileCSV')[0].files[0]);
         $.ajax({
             type: "POST",
@@ -172,23 +170,17 @@ var cy = window.cy = cytoscape({
 
 initCy();
 var selectedNode = "";
+var selectedEdge = "";
+
 cy.on('select', 'node', function(evt) {
-    console.log('tap ' + evt.target.id());
-    evt.target.connectedEdges().style({
-        'line-color': 'black'
-    });
     selectedNode = evt.target.id();
     var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\">Details</button>" +
-//		" <button type=\"button\" id=\"nodeEdit\" class=\"btn btn-secondary btn-sm\">Edit</button>" +
 		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\">Delete</button>";
 
     $(".footer .container").html(tmplate);
     $("#nodeDetails").click(function(){
          $('#detailNodeModal').modal('show');
     });
-//    $("#nodeEdit").click(function(){
-//         $('#editNodeModal').modal('show');
-//    });
     $("#nodeDelete").click(function(){
          $('#deleteNodeModal').modal('show');
     });
@@ -197,10 +189,27 @@ cy.on('select', 'node', function(evt) {
 cy.on('unselect', 'node', function(evt) {
     selectedNode = "";
     $("#nodeDetails").unbind( "click" );
-    $("#nodeEdit").unbind( "click" );
     $("#nodeDelete").unbind( "click" );
     $(".footer .container").html("");
 });
+
+cy.on('select', 'edge', function(evt) {
+    selectedEdge = evt.target.id();
+    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\">Details</button>";
+
+    $(".footer .container").html(tmplate);
+    $("#edgeDetails").click(function(){
+         $('#detailEdgeModal').modal('show');
+    });
+});
+
+cy.on('unselect', 'edge', function(evt) {
+    selectedEdge = "";
+    $("#edgeDetails").unbind( "click" );
+    $(".footer .container").html("");
+});
+
+
 
 function redrawAgentsCache() {
     redrawAgents(cy.elements());
