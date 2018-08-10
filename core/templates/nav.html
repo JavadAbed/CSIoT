@@ -1,0 +1,58 @@
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">CSIoT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation$
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Data
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#devicesModal" href="#">Manage Devices</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#ownersModal" href="#">Manage Owners</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#agentsModal" href="#">Manage Agents</a>
+        </div>
+</li>
+
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Agents
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#newNodeModal" href="#">New Agent</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#uploadNodeModal" href="#">Upload Agent Data</a>
+              <a class="dropdown-item" id="exportAgents" href="/exportData">Export Agent Data</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#clearModal" href="#">Clear All Data</a>
+
+        </div>
+</li>
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Graph
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" id="refreshGraph" href="#">Redraw Graph</a>
+              <a class="dropdown-item" id="layoutGraphCircle" href="#">Layout: Cricle</a>
+              <a class="dropdown-item" id="layoutGraphGrid" href="#">Layout: Grid</a>
+              <a class="dropdown-item" id="layoutGraphPredef" href="#">Layout: Preset X,Y Cordination</a>
+              <a class="dropdown-item" id="layoutGraphRandom" href="#">Layout: Random</a>
+
+        </div> </li>
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Simulation
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" data-toggle="modal" data-target="#simulationModal" href="#">Start Simulation</a>
+              <a class="dropdown-item" id="simulation1Step" href="#">Simulate 1 Step</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#simulationLogModal" href="#">Simulation Log</a>
+
+        </div> </li>
+          </ul>
+        </div>
+      </nav>
+

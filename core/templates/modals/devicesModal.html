@@ -1,0 +1,58 @@
+<div class="modal fade" id="devicesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scroll" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Devices</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-body-scroll">
+
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Brand</th>
+      <th scope="col">Year</th>
+      <th scope="col">Services Needs</th>
+      <th scope="col">Services Offers</th>
+      <th scope="col">Locality?</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Apple</td>
+      <td>2015</td>
+      <td>1-2-3-4</td>
+      <td>10-11</td>
+      <td>100</td>
+      <td><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Nokia</td>
+      <td>2006</td>
+      <td>3-5</td>
+      <td>7</td>
+      <td>80</td>
+      <td><button type="button" class="btn btn-danger btn-sm">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger">Erase</button>
+        <button type="button" class="btn btn-info">Import</button>
+        <button type="button" class="btn btn-info">Export</button>
+        <button type="button" class="btn btn-primary"  data-toggle="modal" href="#newDevice">New</button>
+      </div>
+    </div>
+  </div>
+</div>
