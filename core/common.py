@@ -1,5 +1,6 @@
 import uuid
 import core
+import core.config
 import random
 import string
 from pymongo import MongoClient
@@ -12,10 +13,6 @@ from hashlib import md5
 
 __connection = None
 __client = None
-
-mongo_addr = "127.0.0.1"
-mongo_port = 27017
-mongo_db_name = "csiot"
 
 external_client = None
 
@@ -32,12 +29,12 @@ def get_conn():
     global __client, __connection
     if not __connection:
         try:
-            __client = MongoClient(mongo_addr, mongo_port)
-            __connection = __client[mongo_db_name]
+            __client = MongoClient(core.config.mongo_uri)
+            __connection = __client[core.config.mongo_db_name]
         except ConnectionFailure:
-            raise SevereInternalException("Could not connect to mongo database {} at {}:{}".format(mongo_db_name, mongo_addr, mongo_port))
+            raise SevereInternalException("Could not connect to mongo database {} at {}:{}".format(core.config.mongo_db_name, core.config.mongo_uri))
         except InvalidName as error:
-            raise SevereInternalException("Database {} is invalid! - {}".format(mongo_db_name, error))
+            raise SevereInternalException("Database {} is invalid! - {}".format(core.config.mongo_db_name, error))
 
     return __connection
 
