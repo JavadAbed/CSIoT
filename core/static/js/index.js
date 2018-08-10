@@ -162,24 +162,45 @@ $(function() {
         redrawAgentsCache();
     });
 
-
-
-
 });
 var curr_layout = "preset";
 var cy = window.cy = cytoscape({
-    container: document.getElementById('cy')
+    container: document.getElementById('cy'),
+    minZoom: 0.01,
+    maxZoom: 200
 });
 
 initCy();
-
-cy.on('tap', 'node', function(evt) {
+var selectedNode = "";
+cy.on('select', 'node', function(evt) {
     console.log('tap ' + evt.target.id());
     evt.target.connectedEdges().style({
         'line-color': 'black'
     });
+    selectedNode = evt.target.id();
+    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\">Details</button>" +
+//		" <button type=\"button\" id=\"nodeEdit\" class=\"btn btn-secondary btn-sm\">Edit</button>" +
+		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\">Delete</button>";
+
+    $(".footer .container").html(tmplate);
+    $("#nodeDetails").click(function(){
+         $('#detailNodeModal').modal('show');
+    });
+//    $("#nodeEdit").click(function(){
+//         $('#editNodeModal').modal('show');
+//    });
+    $("#nodeDelete").click(function(){
+         $('#deleteNodeModal').modal('show');
+    });
 });
 
+cy.on('unselect', 'node', function(evt) {
+    selectedNode = "";
+    $("#nodeDetails").unbind( "click" );
+    $("#nodeEdit").unbind( "click" );
+    $("#nodeDelete").unbind( "click" );
+    $(".footer .container").html("");
+});
 
 function redrawAgentsCache() {
     redrawAgents(cy.elements());

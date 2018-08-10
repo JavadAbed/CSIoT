@@ -46,3 +46,14 @@ code {
         left: 0px;
     }
 
+
+
+
+ /* Important part */
+.modal-dialog-scroll{
+    overflow-y: initial !important
+}
+.modal-body-scroll{
+    height: 500px;
+    overflow-y: auto;
+}
