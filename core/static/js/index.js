@@ -49,6 +49,14 @@ $(function() {
         });
     });
 
+
+    $(".modal").on('show.bs.modal', function(e) {
+        var thisId = $(e.relatedTarget).data('id');
+        if (typeof thisId !== 'undefined') {
+            $(e.currentTarget).find('input.btn-danger').data('id');
+        }
+    });
+
     $("#agentUploadSubmit").click(function() {
         var updata = new FormData();
         updata.append('file', $('#fileCSV')[0].files[0]);
@@ -74,7 +82,6 @@ $(function() {
             }
         });
     });
-
 
     $("button#deleteAll").click(function() {
         $.ajax({
@@ -169,43 +176,26 @@ var cy = window.cy = cytoscape({
 });
 
 initCy();
-var selectedNode = "";
-var selectedEdge = "";
-
 cy.on('select', 'node', function(evt) {
     selectedNode = evt.target.id();
-    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\">Details</button>" +
-		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\">Delete</button>";
+    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedNode +" data-toggle=\"modal\" data-target=\"#detailNodeModal\" >Details</button>" +
+		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\" data-id=" + selectedNode +" data-toggle=\"modal\" data-target=\"#deleteNodeModal\" >Delete</button>";
 
     $(".footer .container").html(tmplate);
-    $("#nodeDetails").click(function(){
-         $('#detailNodeModal').modal('show');
-    });
-    $("#nodeDelete").click(function(){
-         $('#deleteNodeModal').modal('show');
-    });
 });
 
 cy.on('unselect', 'node', function(evt) {
-    selectedNode = "";
-    $("#nodeDetails").unbind( "click" );
-    $("#nodeDelete").unbind( "click" );
     $(".footer .container").html("");
 });
 
 cy.on('select', 'edge', function(evt) {
     selectedEdge = evt.target.id();
-    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\">Details</button>";
+    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedEdge +" data-toggle=\"modal\" data-target=\"#detailEdgeModal\" >Details</button>";
 
     $(".footer .container").html(tmplate);
-    $("#edgeDetails").click(function(){
-         $('#detailEdgeModal').modal('show');
-    });
 });
 
 cy.on('unselect', 'edge', function(evt) {
-    selectedEdge = "";
-    $("#edgeDetails").unbind( "click" );
     $(".footer .container").html("");
 });
 
@@ -258,4 +248,28 @@ function initCy() {
         }
     });
 }
+
+
+
+
+    function deleteSth(action,object,modalId){
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: "id="+id,
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    $(modalId).modal('hide');
+                    redrawAgents(msg.data);
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
+
+
+    }
 
