@@ -46,15 +46,22 @@ def export_agents():
 def start_simulation(params):
     simulation.start(params)
     agents = agent.agents();
-    return WebSuccess(data = agents);
-
+    logs = simulation.logs_for_ts(params["numberOfSteps"])
+    ts = simulation.find_ts(do_update=False)
+    return WebSuccess(data = {"graph":agents, "logs": logs, "ts": ts} )
 
 
 @app.route('/deleteAll', methods=['POST'])
 @api_wrapper
 def delete_all():
-    agent.deleteAll();
-    agents = agent.agents();
+    agent.deleteAll()
+    simulation.clear_all_messages()
+    simulation.reset_ts()
+    agents = agent.agents()
     return WebSuccess(data = agents);
 
 
+@app.route('/lastMessages', methods=['GET'])
+@api_wrapper
+def last_messages():
+    return WebSuccess(data= simulation.last_messages(1000))

@@ -7,11 +7,16 @@ from random import *
 
 def new_agent(params):
   db = get_conn()
+  # validate, agent name not empty
+  if len(params["agentName"].strip()) == 0:
+     raise WebException("Agent name is empty")
   # validate, agent name must be uniq
   old = db.agents.find({"name": params["agentName"]})
   if old.count()>0:
      raise WebException("Agent with identical name already exists.")
-  # TODO more validations
+
+  service_need = {str(randint(0,100)):None for x in range(4)}
+  service_offer = [str(randint(0,100)) for x in range(4)]
 
   agent ={
     "name": params["agentName"],
@@ -27,7 +32,9 @@ def new_agent(params):
     "qod" : randint(0,10),
     "qos" : randint(0,10),
     "availability" : randint(0,10),
-    "friendships": {}
+    "friendships": {},
+    "service_need": service_need,
+    "service_offer": service_offer
   }
   db.agents.insert(agent)
   return agents()
@@ -50,7 +57,8 @@ def agents():
   agents = list(db.agents.find())
   data = []
   for agent in agents:
-     data.append({"data": {"id": agent["name"]},
+     agent.pop('_id')
+     data.append({"data": {"id": agent["name"], "locality":agent.get("locality"),"obj":agent },
 		"position": {"x": agent["x"],"y":agent["y"] }    })
      for fshipk,fshipv in agent["friendships"].items():
          # average:
@@ -80,3 +88,4 @@ def makeCSVString():
 				agent.get("agentX"),agent.get("agentY"),agent.get("agentFriends"),
 				agent.get("agentNeeds"),agent.get("agentOffers")])
    return output.getvalue()
+

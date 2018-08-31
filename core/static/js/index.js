@@ -1,29 +1,29 @@
 $(function() {
     $("#agentRandom").click(function() {
-        $("#agentName").val(Math.floor(Math.random() * 10000) + 1);
-        $("#agentBatch").val(Math.floor(Math.random() * 10000) + 1);
-        $("#agentOwner").val(Math.floor(Math.random() * 100) + 1);
-        $("#agentLocality").val(10* Math.floor(Math.random() * 15) + 20);
-        $("#agentX").val(Math.floor(Math.random() * 2000) + 1);
-        $("#agentY").val(Math.floor(Math.random() * 2000) + 1);
+        $("#newNodeModal #agentName").val(Math.floor(Math.random() * 10000) + 1);
+        $("#newNodeModal #agentBatch").val(Math.floor(Math.random() * 10000) + 1);
+        $("#newNodeModal #agentOwner").val(Math.floor(Math.random() * 100) + 1);
+        $("#newNodeModal #agentLocality").val(10* Math.floor(Math.random() * 15) + 20);
+        $("#newNodeModal #agentX").val(Math.floor(Math.random() * 2000) + 1);
+        $("#newNodeModal #agentY").val(Math.floor(Math.random() * 2000) + 1);
         var arr = [];
         var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
             arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentFriendsH").val(arr.join('-'));
+        $("#newNodeModal #agentFriendsH").val(arr.join('-'));
         arr = [];
         var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
             arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentFriendsM").val(arr.join('-'));
+        $("#newNodeModal #agentFriendsM").val(arr.join('-'));
         arr = [];
         var frNum = Math.floor(Math.random() * 10);
         for (var i = 0; i < frNum; i++) {
             arr.push(Math.floor(Math.random() * 100) + 1);
         }
-        $("#agentFriendsL").val(arr.join('-'));
+        $("#newNodeModal #agentFriendsL").val(arr.join('-'));
 
     });
 
@@ -49,12 +49,24 @@ $(function() {
         });
     });
 
-
-    $(".modal").on('show.bs.modal', function(e) {
-        var thisId = $(e.relatedTarget).data('id');
-        if (typeof thisId !== 'undefined') {
-            $(e.currentTarget).find('input.btn-danger').data('id');
-        }
+    $("#simulationLogModal").on('show.bs.modal', function(e) {
+        $.ajax({
+            type: "GET",
+            url: "/lastMessages",
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    console.log(msg);
+                    $("#messagesTable").bootstrapTable({
+			data: msg.data
+                    });
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
     });
 
     $("#agentUploadSubmit").click(function() {
@@ -109,7 +121,7 @@ $(function() {
             data: "numberOfSteps=1",
             success: function(msg) {
                 if (msg["status"] == 1) {
-                    redrawAgents(msg.data);
+                    redrawAgents(msg.data.graph);
                 } else {
                     alert(msg["message"]);
                 }
@@ -128,7 +140,7 @@ $(function() {
             success: function(msg) {
                 if (msg["status"] == 1) {
                     $('#simulationModal').modal('hide');
-                    redrawAgents(msg.data);
+                    redrawAgents(msg.data.graph);
                 } else {
                     alert(msg["message"]);
                 }
@@ -216,7 +228,9 @@ function redrawAgents(newNodes) {
         selector: 'node',
         style: {
             shape: 'ellipse',
-            label: 'data(id)'
+            label: 'data(id)',
+	   width: 25,
+	  height: 25
         }
     },{
         selector: 'edge',
@@ -224,7 +238,20 @@ function redrawAgents(newNodes) {
            label: 'data(strength)',
            width: 'data(strength)'
         }
-      }]).update();
+    },
+      {
+        selector: 'node:active',
+        style: {
+		"padding":  function( ele ){return ele.data('locality') -13},
+            "background-opacity": 0.3,
+	"background-color": "red",
+          "overlay-color": "black",
+	  "overlay-opacity": 0,
+         "ghost": "yes"
+
+        }
+      }
+    ]).update();
 }
 
 function initCy() {
