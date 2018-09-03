@@ -220,16 +220,11 @@ var selectedNode;
 var showingTip;
 cy.on('select', 'node', function(evt) {
     selectedNode = evt.target;
-    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedNode.id() 
-                             +" data-toggle=\"modal\" data-target=\"#detailNodeModal\" >Details</button>" +
-		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\" data-id=" + selectedNode.id() 
-                             +" data-toggle=\"modal\" data-target=\"#deleteNodeModal\" >Delete</button>";
     if(showingTip!=null){
        showingTip.hide();
     }
     showingTip = makeTippy(selectedNode, selectedNode.id() );
     showingTip.show();
-    $(".footer .container").html(tmplate);
 });
 
 cy.on('unselect', 'node', function(evt) {
@@ -238,33 +233,19 @@ cy.on('unselect', 'node', function(evt) {
        showingTip.hide();
        showingTip = null;
     }
-    $(".footer .container").html("");
 });
 
 cy.on('select', 'edge', function(evt) {
     selectedEdge = evt.target;
-    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedEdge.id() 
-		+" data-toggle=\"modal\" data-target=\"#detailEdgeModal\" >Details</button>";
-
-    $(".footer .container").html(tmplate);
 });
 
 cy.on('unselect', 'edge', function(evt) {
-    $(".footer .container").html("");
 });
 
 var makeTippy = function(node, text){
 	return tippy( node.popperRef(), {
 		html: (function(){
 			var div = document.createElement('div');
-/*			div.innerHTML = "<table class=\"table table-bordered table-sm\"><tbody><tr><td>Id</td><td>" + node.id() + "</td></tr>"+
-				"<tr><td >Owner</td><td>" + node.data().obj.owner + "</td></tr>"+
-				"<tr><td scope=\"row\">Batch</td><td>" + node.data().obj.owner + "</td></tr>"+
-				"<tr><td scope=\"row\">Locality</td><td>" + node.data().obj.owner + "</td></tr>"+
-				"<tr><td scope=\"row\"></td><td>" + node.data().obj.owner + "</td></tr>"+
-				"<tr><td scope=\"row\">Owner</td><td>" + node.data().obj.owner + "</td></tr>"+
-				"</tbody></table>";
-*/
 			div.innerHTML = '<div class="container">' +
 				'<div class="row"><div class="col">Id</div><div class="col">' + node.id() + '</div></div>' +
 				'<div class="row"><div class="col">Owner</div><div class="col text-left">' + node.data().obj.owner + '</div></div>'+
