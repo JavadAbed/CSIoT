@@ -151,8 +151,13 @@ $(function() {
         });
     });
 
-    $("#simulationLogModal").on('shown.bs.modal', function() {
-	console.log("logs opened");
+    $("").on('shown.bs.modal', function() {
+        console.log("logs opened");
+    });
+
+
+    $(".modal").on('shown.bs.modal', function() {
+      	cy.elements(":selected").forEach(function( ele ){ele.unselect();});
     });
 
     $("#refreshGraph").click(function() {
@@ -180,6 +185,22 @@ $(function() {
     });
 
 });
+
+
+function locality_circle(evt){
+   bottomLayer.resetTransform(ctx);
+   bottomLayer.clear(ctx);
+   bottomLayer.setTransform(ctx);
+   ctx.save();
+   if(selectedNode!=null){
+        ctx.beginPath();
+        ctx.setLineDash([5, 3]);
+        ctx.arc(selectedNode.position().x,selectedNode.position().y,
+            selectedNode.data().locality,0,2*Math.PI);
+        ctx.stroke();
+   }
+}
+
 var curr_layout = "preset";
 var cy = window.cy = cytoscape({
     container: document.getElementById('cy'),
@@ -187,22 +208,43 @@ var cy = window.cy = cytoscape({
     maxZoom: 200
 });
 
-initCy();
-cy.on('select', 'node', function(evt) {
-    selectedNode = evt.target.id();
-    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedNode +" data-toggle=\"modal\" data-target=\"#detailNodeModal\" >Details</button>" +
-		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\" data-id=" + selectedNode +" data-toggle=\"modal\" data-target=\"#deleteNodeModal\" >Delete</button>";
+const bottomLayer = cy.cyCanvas({
+    zIndex: -1
+});
+const canvas = bottomLayer.getCanvas();
+const ctx = canvas.getContext("2d");
+cy.on("render cyCanvas.resize", locality_circle);
 
+initCy();
+var selectedNode;
+var showingTip;
+cy.on('select', 'node', function(evt) {
+    selectedNode = evt.target;
+    var tmplate = " <button type=\"button\" id=\"nodeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedNode.id() 
+                             +" data-toggle=\"modal\" data-target=\"#detailNodeModal\" >Details</button>" +
+		" <button type=\"button\" id=\"nodeDelete\" class=\"btn btn-danger btn-sm\" data-id=" + selectedNode.id() 
+                             +" data-toggle=\"modal\" data-target=\"#deleteNodeModal\" >Delete</button>";
+    if(showingTip!=null){
+       showingTip.hide();
+    }
+    showingTip = makeTippy(selectedNode, selectedNode.id() );
+    showingTip.show();
     $(".footer .container").html(tmplate);
 });
 
 cy.on('unselect', 'node', function(evt) {
+    selectedNode = null;
+    if(showingTip!=null){
+       showingTip.hide();
+       showingTip = null;
+    }
     $(".footer .container").html("");
 });
 
 cy.on('select', 'edge', function(evt) {
-    selectedEdge = evt.target.id();
-    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedEdge +" data-toggle=\"modal\" data-target=\"#detailEdgeModal\" >Details</button>";
+    selectedEdge = evt.target;
+    var tmplate = " <button type=\"button\" id=\"edgeDetails\" class=\"btn btn-secondary btn-sm\" data-id=" + selectedEdge.id() 
+		+" data-toggle=\"modal\" data-target=\"#detailEdgeModal\" >Details</button>";
 
     $(".footer .container").html(tmplate);
 });
@@ -211,7 +253,36 @@ cy.on('unselect', 'edge', function(evt) {
     $(".footer .container").html("");
 });
 
-
+var makeTippy = function(node, text){
+	return tippy( node.popperRef(), {
+		html: (function(){
+			var div = document.createElement('div');
+/*			div.innerHTML = "<table class=\"table table-bordered table-sm\"><tbody><tr><td>Id</td><td>" + node.id() + "</td></tr>"+
+				"<tr><td >Owner</td><td>" + node.data().obj.owner + "</td></tr>"+
+				"<tr><td scope=\"row\">Batch</td><td>" + node.data().obj.owner + "</td></tr>"+
+				"<tr><td scope=\"row\">Locality</td><td>" + node.data().obj.owner + "</td></tr>"+
+				"<tr><td scope=\"row\"></td><td>" + node.data().obj.owner + "</td></tr>"+
+				"<tr><td scope=\"row\">Owner</td><td>" + node.data().obj.owner + "</td></tr>"+
+				"</tbody></table>";
+*/
+			div.innerHTML = '<div class="container">' +
+				'<div class="row"><div class="col">Id</div><div class="col">' + node.id() + '</div></div>' +
+				'<div class="row"><div class="col">Owner</div><div class="col text-left">' + node.data().obj.owner + '</div></div>'+
+				'<div class="row"><div class="col">Batch</div><div class="col text-left"">' + node.data().obj.batch + '</div></div>'+
+				'<div class="row"><div class="col">Locality</div><div class="col text-left"">' + node.data().locality + '</div></div>'+
+				'<div class="row"><div class="col">X</div><div class="col text-left"">' + node.data().obj.x + '</div></div>'+
+				'<div class="row"><div class="col">Y</div><div class="col text-left"">' + node.data().obj.y + '</div></div>'+
+				"</div>";
+			return div;
+		})(),
+		trigger: 'manual',
+		arrow: true,
+		placement: 'bottom',
+		hideOnClick: false,
+		multiple: true,
+		sticky: true
+	} ).tooltips[0];
+};
 
 function redrawAgentsCache() {
     redrawAgents(cy.elements());
@@ -238,7 +309,8 @@ function redrawAgents(newNodes) {
            label: 'data(strength)',
            width: 'data(strength)'
         }
-    },
+    }
+/*,
       {
         selector: 'node:active',
         style: {
@@ -251,6 +323,7 @@ function redrawAgents(newNodes) {
 
         }
       }
+*/
     ]).update();
 }
 
