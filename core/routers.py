@@ -46,7 +46,8 @@ def export_agents():
 @api_wrapper
 @make_params
 def start_simulation(params):
-    simulation.start(params)
+    numberOfSteps = int(params["numberOfSteps"])
+    simulation.start(numberOfSteps)
     ts = simulation.find_ts(do_update=False)
     agents = agent.agents(ts,ts);
     #logs = simulation.logs_for_ts(params["numberOfSteps"])

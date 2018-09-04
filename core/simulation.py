@@ -8,8 +8,8 @@ CONSUME_SERVICE_FRIEND = 200
 CONSUME_SERVICE_FRIEND_FRIEND = 210
 CONSUME_SERVICE_FRIEND_FRIEND_FRIEND = 220
 
-def start(params):
-   for i in range(int(params["numberOfSteps"])):
+def start(numberOfSteps):
+   for i in range(numberOfSteps):
        current_ts =find_ts()
        simulate_one_step(current_ts)
 

@@ -53,15 +53,12 @@ def upload_agent(file):
   pass # TOD O
 
 def agents(ts_real, ts_requested):
-  print(ts_real, ts_requested)
   if ts_requested is None:
     ts_requested = ts_real
   ts_requested = int(ts_requested)
   db = get_conn()
   agents = list(db.agents.find({"ts_added": {"$lt": ts_requested} }))
   data = []
-  print(len(list(db.agents.find({"ts_added": {"$gt": ts_requested} }))))
-  print(len(agents))
   for agent in agents:
      agent.pop('_id')
      data.append({"data": {"id": agent["name"], "locality":agent.get("locality"),"obj":agent },
