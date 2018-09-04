@@ -16,9 +16,7 @@ def start(params):
 def simulate_one_step(current_ts):
    db = get_conn()
    nodes = list( db.agents.find())
-   nodes_dic = {}
-   for node1 in nodes:
-     nodes_dic[node1["name"]] = node1
+   nodes_dic = {node1["name"]:node1 for node1 in nodes}
    # reply message
    for node1 in nodes:
      for node2 in nodes:
@@ -40,7 +38,7 @@ def simulate_one_step(current_ts):
               trying_frienship(current_ts,node1,node2)
    # service
    for node in find_nodes_services(nodes):
-     for service in [ks for ks,vs in node["service_need"] if vs is None]:
+     for service in [srv[0] for srv in node["service_need"].items() if srv[1] is None]:
         found = False
         for fshipk,fshipv in sorted(node["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
            node2 = nodes_dic[fshipk]
@@ -106,7 +104,7 @@ def find_ts(do_update=True):
 
 def reset_ts():
    db = get_conn()
-   db.vars.find_one_and_update({},{"ts":0})
+   db.vars.find_one_and_update({},{"$set":{"ts":0}})
 
 def reply_msg(msg, current_ts, node1, node2):
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_INIT:

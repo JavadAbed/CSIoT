@@ -38,7 +38,7 @@ $(function() {
                     // update graph
                     $('#newAgent')[0].reset();
                     $('#newNodeModal').modal('hide');
-                    redrawAgents(msg.data);
+                    redrawAgents(msg.data.data);
                 } else {
                     alert(msg["message"]);
                 }
@@ -340,8 +340,8 @@ function initCy() {
 
 
 function stepBackward(){
-   if(ts_requested>0){
-	ts_requested-=1;
+   if(ts_requested > 1){
+	ts_requested -= 1;
         load_graph(ts_requested);
    }
 }
@@ -355,23 +355,29 @@ function stepForward(){
    	}
    }
 }
-    function sim_forward() {
+
+
+function sim_forward() {
         $.ajax({
             type: "POST",
             url: "/startSimulation",
             data: "numberOfSteps=1",
             success: function(msg) {
-                if (msg["status"] == 1) {
-                    redrawAgents(msg.data.graph);
-                } else {
+              if (msg["status"] == 1) {
+                redrawAgents(msg.data.data)
+                ts_real = parseInt(msg.data.ts_real);
+                ts_requested = parseInt(msg.data.ts_requested);
+                $("#ts_real").text(msg.data.ts_real);
+                $("#ts_requested").text(msg.data.ts_requested);
+              } else {
                     alert(msg["message"]);
-                }
+              }
             },
             error: function() {
                 alert("failure");
             }
         });
-    }
+}
 
 
 

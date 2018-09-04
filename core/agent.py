@@ -38,7 +38,7 @@ def new_agent(ts, params):
     "service_offer": service_offer
   }
   db.agents.insert(agent)
-  return agents()
+  return agents(ts,ts)
 
 def deleteAll():
    db = get_conn()
@@ -50,14 +50,18 @@ def upload_agent(file):
   reader = csv.reader(file)
   for row in reader:
      print(row)
-  pass#TODO
+  pass # TOD O
 
 def agents(ts_real, ts_requested):
+  print(ts_real, ts_requested)
   if ts_requested is None:
     ts_requested = ts_real
+  ts_requested = int(ts_requested)
   db = get_conn()
-  agents = list(db.agents.find())
+  agents = list(db.agents.find({"ts_added": {"$lt": ts_requested} }))
   data = []
+  print(len(list(db.agents.find({"ts_added": {"$gt": ts_requested} }))))
+  print(len(agents))
   for agent in agents:
      agent.pop('_id')
      data.append({"data": {"id": agent["name"], "locality":agent.get("locality"),"obj":agent },
@@ -74,12 +78,12 @@ def agents(ts_real, ts_requested):
          for agent2 in agents:
              if agent2["name"] == fshipk:
                 score2 = agent2["friendships"][agent["name"]]["strength"]
-         # 
+         #
          data.append({"data":{"id": agent["name"]+"-"+fshipk ,"source":agent["name"], "target":fshipk, "strength": (int(fshipv["strength"])+int(score2)) / 2 }})
   return {"data": data, "ts_real": ts_real, "ts_requested":ts_requested}
 
 def makeCSVString():
-   db = get_conn() # TODO update 
+   db = get_conn() # TOD O update 
    agents = db.agents.find()
    output = io.StringIO()
    spamwriter = csv.writer(output)

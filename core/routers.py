@@ -28,10 +28,10 @@ def upload_agent():
 @api_wrapper
 @make_params
 def agents(params):
-   ts = simulation.find_ts(do_update=False)
-   ts2 = params.get("ts")
-   agents = agent.agents(ts,ts2);
-   return WebSuccess(data = agents);
+   ts_real = simulation.find_ts(do_update=False)
+   ts_requested = params.get("ts")
+   data = agent.agents(ts_real,ts_requested);
+   return WebSuccess(data = data);
 
 @app.route('/exportData', methods=['GET'])
 def export_agents():
@@ -47,10 +47,10 @@ def export_agents():
 @make_params
 def start_simulation(params):
     simulation.start(params)
-    agents = agent.agents();
-    logs = simulation.logs_for_ts(params["numberOfSteps"])
     ts = simulation.find_ts(do_update=False)
-    return WebSuccess(data = {"graph":agents, "logs": logs, "ts": ts} )
+    agents = agent.agents(ts,ts);
+    #logs = simulation.logs_for_ts(params["numberOfSteps"])
+    return WebSuccess(data = agents )
 
 @app.route('/deleteAll', methods=['POST'])
 @api_wrapper
@@ -58,7 +58,7 @@ def delete_all():
     agent.deleteAll()
     simulation.clear_all_messages()
     simulation.reset_ts()
-    agents = agent.agents()
+    agents = agent.agents(0,0)
     return WebSuccess(data = agents);
 
 @app.route('/lastMessages', methods=['GET'])
