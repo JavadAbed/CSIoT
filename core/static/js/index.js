@@ -114,26 +114,10 @@ $(function() {
         });
     });
 
-    function sim_forward() {
-        $.ajax({
-            type: "POST",
-            url: "/startSimulation",
-            data: "numberOfSteps=1",
-            success: function(msg) {
-                if (msg["status"] == 1) {
-                    redrawAgents(msg.data.graph);
-                } else {
-                    alert(msg["message"]);
-                }
-            },
-            error: function() {
-                alert("failure");
-            }
-        });
-    }
-
-    $("#simulation1Step").click(sim_forward);
-    $("#simulation1Step2").click(sim_forward);
+    $("#stepBackward").click(stepBackward);
+    $("#stepBackward2").click(stepBackward);
+    $("#stepForward").click(stepForward);
+    $("#stepForward2").click(stepForward);
 
     $("button#btnStartSimulation").click(function() {
         $.ajax({
@@ -315,8 +299,12 @@ function redrawAgents(newNodes) {
 */
     ]).update();
 }
+
+
+
 var ts_real = 0;
 var ts_requested = 0;
+
 function load_graph(ts) {
     var rdata = {};
     if(ts>0){
@@ -332,8 +320,8 @@ function load_graph(ts) {
                 console.log(msg);
                 // update graph
                 redrawAgents(msg.data.data)
-                ts_real = msg.data.ts_real;
-                ts_requested = msg.data.ts_requested;
+                ts_real = parseInt(msg.data.ts_real);
+                ts_requested = parseInt(msg.data.ts_requested);
                 $("#ts_real").text(msg.data.ts_real);
                 $("#ts_requested").text(msg.data.ts_requested);
             } else {
@@ -349,6 +337,44 @@ function load_graph(ts) {
 function initCy() {
    load_graph(-1);
 }
+
+
+function stepBackward(){
+   if(ts_requested>0){
+	ts_requested-=1;
+        load_graph(ts_requested);
+   }
+}
+function stepForward(){
+   if(ts_requested==ts_real){
+        sim_forward();
+   }else{
+	if(ts_requested<ts_real){
+        	ts_requested+=1;
+	        load_graph(ts_requested);
+   	}
+   }
+}
+    function sim_forward() {
+        $.ajax({
+            type: "POST",
+            url: "/startSimulation",
+            data: "numberOfSteps=1",
+            success: function(msg) {
+                if (msg["status"] == 1) {
+                    redrawAgents(msg.data.graph);
+                } else {
+                    alert(msg["message"]);
+                }
+            },
+            error: function() {
+                alert("failure");
+            }
+        });
+    }
+
+
+
 
     function deleteSth(action,object,modalId){
         $.ajax({

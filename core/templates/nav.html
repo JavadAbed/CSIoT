@@ -50,8 +50,8 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" id="refreshGraph" href="#"><span class="oi oi-reload"></span> Redraw Graph</a>
               <a class="dropdown-item" data-toggle="modal" data-target="#simulationModal" href="#"><span class="oi oi-media-skip-forward"></span> Start Simulation</a>
-              <a class="dropdown-item" href="#" id=""><span class="oi oi-media-step-backward"></span> Step Backward</a>
-              <a class="dropdown-item" href="#" id="simulation1Step2"><span class="oi oi-media-step-forward"></span> Step Forward</a>
+              <a class="dropdown-item" href="#" id="stepBackward"><span class="oi oi-media-step-backward"></span> Step Backward</a>
+              <a class="dropdown-item" href="#" id="stepForward"><span class="oi oi-media-step-forward"></span> Step Forward</a>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target=""><span class="oi oi-list"></span> Last Step Logs</a>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#simulationLogModal"><span class="oi oi-spreadsheet"></span> Logs</a>
 
@@ -66,19 +66,17 @@
 	<span class="badge badge-secondary" id="ts_real">100</span>
   </span>
 
-
+<!-- icons from: https://useiconic.com/open/ //-->
       <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#newNodeModal" data-toggle="tooltip" data-placement="bottom" title="New Agent">
 				<span class="oi oi-plus"></span></button>
       <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="refreshGraph2" data-toggle="tooltip" data-placement="bottom" title="Reload Graph">
 				<span class="oi oi-reload"></span></button>
-      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#n1111" data-toggle="tooltip" data-placement="bottom" title="Step Backward">
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="stepBackward2" data-toggle="tooltip" data-placement="bottom" title="Step Backward">
 				<span class="oi oi-media-step-backward"></span></button>
       <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#simulationLogModal" data-toggle="tooltip" data-placement="bottom" title="Last step logs">
 				<span class="oi oi-list"></span></button>
-      <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="simulation1Step2" data-toggle="tooltip" data-placement="bottom" title="Step Forward">
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="stepForward2" data-toggle="tooltip" data-placement="bottom" title="Step Forward">
 				<span class="oi oi-media-step-forward"></span></button>
-      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#simulationModal" data-toggle="tooltip" data-placement="bottom" title="Start Simulation">
-				<span class="oi oi-media-skip-forward"></span></button>
         </div>
       </nav>
 
