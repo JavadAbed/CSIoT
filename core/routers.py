@@ -12,10 +12,9 @@ def index_page():
 @api_wrapper
 @make_params
 def new_agent(params):
-   data = agent.new_agent(params);
-   return WebSuccess(data = data);
-
-
+   ts = simulation.find_ts(do_update=False)
+   data = agent.new_agent(ts,params)
+   return WebSuccess(data = data)
 
 @app.route('/uploadAgent', methods=['POST'])
 @api_wrapper
@@ -27,8 +26,11 @@ def upload_agent():
 
 @app.route('/agents', methods=['GET'])
 @api_wrapper
-def agents():
-   agents = agent.agents();
+@make_params
+def agents(params):
+   ts = simulation.find_ts(do_update=False)
+   ts2 = params.get("ts")
+   agents = agent.agents(ts,ts2);
    return WebSuccess(data = agents);
 
 @app.route('/exportData', methods=['GET'])
@@ -50,7 +52,6 @@ def start_simulation(params):
     ts = simulation.find_ts(do_update=False)
     return WebSuccess(data = {"graph":agents, "logs": logs, "ts": ts} )
 
-
 @app.route('/deleteAll', methods=['POST'])
 @api_wrapper
 def delete_all():
@@ -59,7 +60,6 @@ def delete_all():
     simulation.reset_ts()
     agents = agent.agents()
     return WebSuccess(data = agents);
-
 
 @app.route('/lastMessages', methods=['GET'])
 @api_wrapper

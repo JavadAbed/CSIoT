@@ -133,6 +133,7 @@ def is_friend(node1,node2):
    return fs.get(node2["name"]) is not None
 
 def is_first_relation(node1,node2):
+   db = get_conn()
    return db.messages.count({"from":node1["name"],"to":node2["name"],"msg_type":MESSAGE_FRIENDSHIP_INIT})==0
 
 def trying_frienship(current_ts,node1,node2):

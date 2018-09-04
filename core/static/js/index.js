@@ -114,7 +114,7 @@ $(function() {
         });
     });
 
-    $("#simulation1Step").click(function() {
+    function sim_forward() {
         $.ajax({
             type: "POST",
             url: "/startSimulation",
@@ -130,7 +130,10 @@ $(function() {
                 alert("failure");
             }
         });
-    });
+    }
+
+    $("#simulation1Step").click(sim_forward);
+    $("#simulation1Step2").click(sim_forward);
 
     $("button#btnStartSimulation").click(function() {
         $.ajax({
@@ -161,6 +164,9 @@ $(function() {
     });
 
     $("#refreshGraph").click(function() {
+        initCy();
+    });
+    $("#refreshGraph2").click(function() {
         initCy();
     });
 
@@ -205,7 +211,9 @@ var curr_layout = "preset";
 var cy = window.cy = cytoscape({
     container: document.getElementById('cy'),
     minZoom: 0.01,
-    maxZoom: 200
+    maxZoom: 200,
+    autoungrabify: true
+
 });
 
 const bottomLayer = cy.cyCanvas({
@@ -307,19 +315,27 @@ function redrawAgents(newNodes) {
 */
     ]).update();
 }
-
-function initCy() {
-
+var ts_real = 0;
+var ts_requested = 0;
+function load_graph(ts) {
+    var rdata = {};
+    if(ts>0){
+      rdata.ts = ts;
+    }
     $.ajax({
         url: '/agents',
         type: 'GET',
+        data: rdata,
         dataType: 'json',
         success: function(msg) {
             if (msg["status"] == 1) {
                 console.log(msg);
                 // update graph
-                redrawAgents(msg.data)
-
+                redrawAgents(msg.data.data)
+                ts_real = msg.data.ts_real;
+                ts_requested = msg.data.ts_requested;
+                $("#ts_real").text(msg.data.ts_real);
+                $("#ts_requested").text(msg.data.ts_requested);
             } else {
                 alert(msg["message"]);
             }
@@ -330,8 +346,9 @@ function initCy() {
     });
 }
 
-
-
+function initCy() {
+   load_graph(-1);
+}
 
     function deleteSth(action,object,modalId){
         $.ajax({

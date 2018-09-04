@@ -23,36 +23,62 @@
           Agents
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" data-toggle="modal" data-target="#newNodeModal" href="#">New Agent</a>
-              <a class="dropdown-item" data-toggle="modal" data-target="#uploadNodeModal" href="#">Upload Agent Data</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#newNodeModal" href="#"><span class="oi oi-plus"></span> New Agent</a>
+<!--              <a class="dropdown-item" data-toggle="modal" data-target="#uploadNodeModal" href="#">Upload Agent Data</a>
               <a class="dropdown-item" id="exportAgents" href="/exportData">Export Agent Data</a>
-              <a class="dropdown-item" data-toggle="modal" data-target="#clearModal" href="#">Clear All Data</a>
+-->
+              <a class="dropdown-item" data-toggle="modal" data-target="#clearModal" href="#"><span class="oi oi-trash"></span> Clear All Data</a>
 
         </div>
 </li>
-<li class="nav-item dropdown">
+<!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Graph
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" id="refreshGraph" href="#">Redraw Graph</a>
               <a class="dropdown-item" id="layoutGraphCircle" href="#">Layout: Cricle</a>
               <a class="dropdown-item" id="layoutGraphGrid" href="#">Layout: Grid</a>
               <a class="dropdown-item" id="layoutGraphPredef" href="#">Layout: Preset X,Y Cordination</a>
               <a class="dropdown-item" id="layoutGraphRandom" href="#">Layout: Random</a>
 
         </div> </li>
-<li class="nav-item dropdown">
+-->
+     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Simulation
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" data-toggle="modal" data-target="#simulationModal" href="#">Start Simulation</a>
-              <a class="dropdown-item" id="simulation1Step" href="#">Simulate 1 Step</a>
-              <a class="dropdown-item" data-toggle="modal" data-target="#simulationLogModal" href="#">Last 1000 Messages</a>
+              <a class="dropdown-item" id="refreshGraph" href="#"><span class="oi oi-reload"></span> Redraw Graph</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#simulationModal" href="#"><span class="oi oi-media-skip-forward"></span> Start Simulation</a>
+              <a class="dropdown-item" href="#" id=""><span class="oi oi-media-step-backward"></span> Step Backward</a>
+              <a class="dropdown-item" href="#" id="simulation1Step2"><span class="oi oi-media-step-forward"></span> Step Forward</a>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target=""><span class="oi oi-list"></span> Last Step Logs</a>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#simulationLogModal"><span class="oi oi-spreadsheet"></span> Logs</a>
 
         </div> </li>
+     
+
+
           </ul>
+  <span class="navbar-text mr-sm-2">
+    Timestamp: 
+	<span class="badge badge-secondary" id="ts_requested">0</span> /
+	<span class="badge badge-secondary" id="ts_real">100</span>
+  </span>
+
+
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#newNodeModal" data-toggle="tooltip" data-placement="bottom" title="New Agent">
+				<span class="oi oi-plus"></span></button>
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="refreshGraph2" data-toggle="tooltip" data-placement="bottom" title="Reload Graph">
+				<span class="oi oi-reload"></span></button>
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#n1111" data-toggle="tooltip" data-placement="bottom" title="Step Backward">
+				<span class="oi oi-media-step-backward"></span></button>
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#simulationLogModal" data-toggle="tooltip" data-placement="bottom" title="Last step logs">
+				<span class="oi oi-list"></span></button>
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" id="simulation1Step2" data-toggle="tooltip" data-placement="bottom" title="Step Forward">
+				<span class="oi oi-media-step-forward"></span></button>
+      <button class="btn btn-outline-secondary btn-sm mr-sm-2" data-toggle="modal" data-target="#simulationModal" data-toggle="tooltip" data-placement="bottom" title="Start Simulation">
+				<span class="oi oi-media-skip-forward"></span></button>
         </div>
       </nav>
 
