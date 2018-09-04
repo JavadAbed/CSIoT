@@ -36,6 +36,7 @@ def simulate_one_step(current_ts):
        else:
           if is_first_relation(node1,node2):
               trying_frienship(current_ts,node1,node2)
+
    # service
    for node in find_nodes_services(nodes):
      for service in [srv[0] for srv in node["service_need"].items() if srv[1] is None]:
@@ -126,8 +127,6 @@ def reply_msg(msg, current_ts, node1, node2):
 
 def is_friend(node1,node2):
    fs = node1.get("friendships")
-   if fs is None:
-      return False
    return fs.get(node2["name"]) is not None
 
 def is_first_relation(node1,node2):
@@ -167,6 +166,8 @@ def start_friendship(current_ts, node1, node2):
       db = get_conn()
       db.agents.find_one_and_update({"_id":node1["_id"]},
 		{"$set":{ "friendships."+ node2["name"]:  {"ts_start":current_ts,"strength":1}}})
+      db.agents.find_one_and_update({"_id":node1["_id"]},
+		{"$push":{ "friendships_h."+ node2["name"]:  {"ts":current_ts,"strength":1}}})
 
 def update_friendship_strength(current_ts,node1,node2,strength):
    if strength > 5:
@@ -178,12 +179,13 @@ def update_friendship_strength(current_ts,node1,node2,strength):
       send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_TERMINATE,"")
    else:
       # update friendship
+      db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"], {"ts":current_ts,"strength":strength}}})
       db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2["name"]+".strength" : strength}})
 
 def terminate_friendship(node1, node2):
     db = get_conn()
+    db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"], {"ts":current_ts,"strength":0 }}})
     db.agents.find_one_and_update({"name":node1["name"]},{"$unset":{"friendships."+node2["name"] : ""}})
-
 
 def last_messages(number):
     db = get_conn()
