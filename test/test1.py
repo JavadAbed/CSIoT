@@ -17,15 +17,15 @@ class SomeTestCase(unittest.TestCase):
       a["agentName"] = "a"
       a["agentX"] = str(100)
       a["agentY"] = str(100)
-      a["agentLocality"] = str(60)
+      a["agentLocality"] = str(100)
 
       b["agentName"] = "b"
       b["agentX"] = str(150)
       b["agentY"] = str(100)
-      b["agentLocality"] = str(60)
+      b["agentLocality"] = str(100)
 
       c["agentName"] = "c"
-      c["agentX"] = str(210)
+      c["agentX"] = str(350)
       c["agentY"] = str(100)
       c["agentLocality"] = str(50)
 
