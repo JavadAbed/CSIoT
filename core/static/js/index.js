@@ -38,7 +38,7 @@ $(function() {
                     // update graph
                     $('#newAgent')[0].reset();
                     $('#newNodeModal').modal('hide');
-                    redrawAgents(msg.data.data);
+                    update_status(msg);
                 } else {
                     alert(msg["message"]);
                 }
@@ -81,7 +81,7 @@ $(function() {
             data: updata,
             success: function(msg) {
                 if (msg["status"] == 1) {
-                    console.log(msg);
+                     update_status(msg);
                     // update graph
                     $('#newAgent')[0].reset();
                     $('#newNodeModal').modal('hide');
@@ -103,7 +103,7 @@ $(function() {
             success: function(msg) {
                 if (msg["status"] == 1) {
                     $('#clearModal').modal('hide'); 
-                    redrawAgents(msg.data);
+                    update_status(msg);
                 } else {
                     alert(msg["message"]);
                 }
@@ -127,7 +127,7 @@ $(function() {
             success: function(msg) {
                 if (msg["status"] == 1) {
                     $('#simulationModal').modal('hide');
-                    redrawAgents(msg.data.graph);
+		    update_status(msg)
                 } else {
                     alert(msg["message"]);
                 }
@@ -194,8 +194,7 @@ function locality_circle(evt){
 var curr_layout = "preset";
 var cy = window.cy = cytoscape({
     container: document.getElementById('cy'),
-    minZoom: 0.01,
-    maxZoom: 200,
+    zoom: 1,
     autoungrabify: true
 
 });
@@ -283,20 +282,6 @@ function redrawAgents(newNodes) {
            width: 'data(strength)'
         }
     }
-/*,
-      {
-        selector: 'node:active',
-        style: {
-		"padding":  function( ele ){return ele.data('locality') -13},
-            "background-opacity": 0.3,
-	"background-color": "red",
-          "overlay-color": "black",
-	  "overlay-opacity": 0,
-         "ghost": "yes"
-
-        }
-      }
-*/
     ]).update();
 }
 
@@ -307,7 +292,7 @@ var ts_requested = 0;
 
 function load_graph(ts) {
     var rdata = {};
-    if(ts>0){
+    if(ts>=0){
       rdata.ts = ts;
     }
     $.ajax({
@@ -317,13 +302,7 @@ function load_graph(ts) {
         dataType: 'json',
         success: function(msg) {
             if (msg["status"] == 1) {
-                console.log(msg);
-                // update graph
-                redrawAgents(msg.data.data)
-                ts_real = parseInt(msg.data.ts_real);
-                ts_requested = parseInt(msg.data.ts_requested);
-                $("#ts_real").text(msg.data.ts_real);
-                $("#ts_requested").text(msg.data.ts_requested);
+               	update_status(msg);
             } else {
                 alert(msg["message"]);
             }
@@ -340,7 +319,7 @@ function initCy() {
 
 
 function stepBackward(){
-   if(ts_requested > 1){
+   if(ts_requested > 0){
 	ts_requested -= 1;
         load_graph(ts_requested);
    }
@@ -356,6 +335,13 @@ function stepForward(){
    }
 }
 
+function update_status(msg){
+	redrawAgents(msg.data.data)
+        ts_real = parseInt(msg.data.ts_real);
+        ts_requested = parseInt(msg.data.ts_requested);
+        $("#ts_real").text(msg.data.ts_real);
+        $("#ts_requested").text(msg.data.ts_requested);
+}
 
 function sim_forward() {
         $.ajax({
@@ -364,11 +350,7 @@ function sim_forward() {
             data: "numberOfSteps=1",
             success: function(msg) {
               if (msg["status"] == 1) {
-                redrawAgents(msg.data.data)
-                ts_real = parseInt(msg.data.ts_real);
-                ts_requested = parseInt(msg.data.ts_requested);
-                $("#ts_real").text(msg.data.ts_real);
-                $("#ts_requested").text(msg.data.ts_requested);
+                update_status(msg);
               } else {
                     alert(msg["message"]);
               }
@@ -378,28 +360,3 @@ function sim_forward() {
             }
         });
 }
-
-
-
-
-    function deleteSth(action,object,modalId){
-        $.ajax({
-            type: "POST",
-            url: action,
-            data: "id="+id,
-            success: function(msg) {
-                if (msg["status"] == 1) {
-                    $(modalId).modal('hide');
-                    redrawAgents(msg.data);
-                } else {
-                    alert(msg["message"]);
-                }
-            },
-            error: function() {
-                alert("failure");
-            }
-        });
-
-
-    }
-

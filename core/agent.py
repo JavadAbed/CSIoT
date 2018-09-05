@@ -5,6 +5,18 @@ from core.common import get_conn
 from core.common import  WebException
 from random import *
 
+def random_agent():
+   return {
+	"agentName": str( randint(1,10000)),
+        "agentOwner": str( randint(1,100)),
+        "agentBatch": str( randint(1,10000)),
+ 	"agentLocality": str( randint(2,17)*10),
+	"agentX": str( randint(1,2000)),
+	"agentY": str( randint(1,2000)),
+	"agentFriendsH": ",".join([str(randint(1,100)) for x in range(randint(1,10)) ]),
+	"agentFriendsM": ",".join([str(randint(1,100)) for x in range(randint(1,10)) ]),
+	"agentFriendsL": ",".join([str(randint(1,100)) for x in range(randint(1,10)) ])
+   }
 def new_agent(ts, params):
   db = get_conn()
   # validate, agent name not empty
@@ -34,6 +46,7 @@ def new_agent(ts, params):
     "qos" : randint(0,10),
     "availability" : randint(0,10),
     "friendships": {},
+    "friendships_h": {},
     "service_need": service_need,
     "service_offer": service_offer
   }
@@ -57,13 +70,14 @@ def agents(ts_real, ts_requested):
     ts_requested = ts_real
   ts_requested = int(ts_requested)
   db = get_conn()
-  agents = list(db.agents.find({"ts_added": {"$lt": ts_requested} }))
+  agents = list(db.agents.find({"ts_added": {"$lte": ts_requested} }))
   data = []
   for agent in agents:
      agent.pop('_id')
      data.append({"data": {"id": agent["name"], "locality":agent.get("locality"),"obj":agent },
 		"position": {"x": agent["x"],"y":agent["y"] }    })
-     for fshipk,fshipv in agent["friendships"].items():
+     for fshipk,fshipv_a in agent["friendships_h"].items():
+         fshipv = [x for x in fshipv_a if x["ts"]<=ts_requested ][-1]
          # average:
          skip_me = False
          for d in data:
@@ -74,7 +88,7 @@ def agents(ts_real, ts_requested):
              continue
          for agent2 in agents:
              if agent2["name"] == fshipk:
-                score2 = agent2["friendships"][agent["name"]]["strength"]
+                score2 = agent2["friendships_h"][agent["name"]][-1]["strength"]
          #
          data.append({"data":{"id": agent["name"]+"-"+fshipk ,"source":agent["name"], "target":fshipk, "strength": (int(fshipv["strength"])+int(score2)) / 2 }})
   return {"data": data, "ts_real": ts_real, "ts_requested":ts_requested}
