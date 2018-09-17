@@ -244,6 +244,10 @@ var makeTippy = function(node, text){
 				'<div class="row"><div class="col">Locality</div><div class="col text-left"">' + node.data().locality + '</div></div>'+
 				'<div class="row"><div class="col">X</div><div class="col text-left"">' + node.data().obj.x + '</div></div>'+
 				'<div class="row"><div class="col">Y</div><div class="col text-left"">' + node.data().obj.y + '</div></div>'+
+				'<div class="row"><div class="col">QoI</div><div class="col text-left"">' + node.data().obj.qoi + '</div></div>'+
+				'<div class="row"><div class="col">QoD</div><div class="col text-left"">' + node.data().obj.qod + '</div></div>'+
+				'<div class="row"><div class="col">QoS</div><div class="col text-left"">' + node.data().obj.qos + '</div></div>'+
+				'<div class="row"><div class="col">Availability</div><div class="col text-left"">' + node.data().obj.availability + '</div></div>'+
 				"</div>";
 			return div;
 		})(),

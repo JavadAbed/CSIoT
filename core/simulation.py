@@ -7,6 +7,8 @@ MESSAGE_FRIENDSHIP_TERMINATE = 102
 CONSUME_SERVICE_FRIEND = 200
 CONSUME_SERVICE_FRIEND_FRIEND = 210
 CONSUME_SERVICE_FRIEND_FRIEND_FRIEND = 220
+LOG_FRIENDSHIP_CHANGE = 1000
+
 
 def start(numberOfSteps):
    for i in range(numberOfSteps):
@@ -87,7 +89,7 @@ def find_nodes_services(nodes):
     return nodes
 
 def consume_service(current_ts,node1, node2, service, type):
-   send_msg(current_ts,node1,node2,type,"",service)
+   send_msg(current_ts,node1,node2,type,service)
    db = get_conn()
    db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"service_need."+service : node2["name"]}})
 
@@ -122,7 +124,7 @@ def reply_msg(msg, current_ts, node1, node2):
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_ACCEPTED:
       start_friendship(current_ts, node1, node2)
    if msg["msg_type"] == MESSAGE_FRIENDSHIP_TERMINATE:
-      terminate_friendship(node1, node2)
+      terminate_friendship(current_ts,node1, node2)
 
 
 def is_friend(node1,node2):
@@ -149,17 +151,20 @@ def distance(node1,node2):
    return  math.sqrt( (node1["x"] - node2["x"])**2 + (node1["y"] - node2["y"])**2 )
 
 def send_msg(current_ts,node1,node2,msg_type,extra):
+   log_msg(current_ts,node1["name"],node2["name"],msg_type,extra)
+
+def log_msg(current_ts,node1,node2,msg_type,extra):
    db = get_conn()
-   db.messages.insert({"from":node1["name"],"to":node2["name"],"ts":current_ts,"msg_type":msg_type,"extra":extra})
+   db.messages.insert({"from":node1,"to":node2,"ts":current_ts,"msg_type":msg_type,"extra":extra})
 
 def change_friendship_level(current_ts,node1,node2):
    fship = node1["friendships"].get(node2["name"])
    if fship is not None:
-       if fship["ts_start"] - current_ts > 30:
-           if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] > 20:
-               update_friendship_strength(current_ts,node1,node2,ship["strength"] +1 )
+       if current_ts - fship["ts_start"] >= 30:
+           if  node2["qos"] + node2["qoi"] + node2["qod"] + node2["availability"] >= 20:
+               update_friendship_strength(current_ts,node1,node2,fship["strength"] +1 )
            else:
-               update_friendship_strength(current_ts,node1,node2,ship["strength"] -1 )
+               update_friendship_strength(current_ts,node1,node2,fship["strength"] -1 )
 
 def start_friendship(current_ts, node1, node2):
    if not is_friend(node1,node2):
@@ -175,22 +180,23 @@ def update_friendship_strength(current_ts,node1,node2,strength):
    db = get_conn()
    if strength == 0:
       # terminate friendship
-      terminate_friendship(node1,node2)
+      terminate_friendship(current_ts,node1,node2)
       send_msg(current_ts,node1,node2,MESSAGE_FRIENDSHIP_TERMINATE,"")
    else:
       # update friendship
-      db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"], {"ts":current_ts,"strength":strength}}})
-      db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2["name"]+".strength" : strength}})
+      db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"]: {"ts":current_ts,"strength":strength}}})
+      db.agents.find_one_and_update({"name":node1["name"]},{"$set":{"friendships."+node2["name"]+".strength" : strength,"friendships."+node2["name"]+".ts_start" : current_ts}})
+      log_msg(current_ts, node1["name"] +"-"+ node2["name"] , "-", LOG_FRIENDSHIP_CHANGE,strength)
 
-def terminate_friendship(node1, node2):
+def terminate_friendship(current_ts,node1, node2):
     db = get_conn()
-    db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"], {"ts":current_ts,"strength":0 }}})
+    db.agents.find_one_and_update({"name":node1["name"]},{"$push":{"friendships_h."+node2["name"]: {"ts":current_ts,"strength":0 }}})
     db.agents.find_one_and_update({"name":node1["name"]},{"$unset":{"friendships."+node2["name"] : ""}})
 
 def last_messages(number):
     db = get_conn()
     data = []
-    for msg in list(db.messages.find().sort("$natural",-1).limit(number)):
+    for msg in list(db.messages.find().sort("ts",-1).limit(number)):
        data.append({
               "from":msg["from"],
               "to": msg["to"],
@@ -198,7 +204,11 @@ def last_messages(number):
               "type": {
                 100: "FRIENDSHIP_INIT",
                 101: "FRIENDSHIP_ACCEPTED",
-                102: "FRIENDSHIP_TERMINATE"
+                102: "FRIENDSHIP_TERMINATE",
+		200: "CONSUME_SERVICE_FRIEND",
+		210: "CONSUME_SERVICE_FRIEND_FRIEND",
+		220: "CONSUME_SERVICE_FRIEND_FRIEND_FRIEND",
+                1000: "LOG_FRIENDSHIP_CHANGE"
                     }[msg["msg_type"]],
               "extra":msg.get("extra")
           })
