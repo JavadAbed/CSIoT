@@ -40,10 +40,10 @@ def simulate_one_step(current_ts):
               trying_frienship(current_ts,node1,node2)
 
    # service
-   for node in find_nodes_services(nodes):
-     for service in [srv[0] for srv in node["service_need"].items() if srv[1] is None]:
+   for node1 in find_nodes_services(nodes):
+     for service in [srv[0] for srv in node1["service_need"].items() if srv[1] is None]:
         found = False
-        for fshipk,fshipv in sorted(node["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
+        for fshipk,fshipv in sorted(node1["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
            node2 = nodes_dic[fshipk]
            if service in node2["service_offer"]:
                 consume_service(current_ts,node1, node2, service,CONSUME_SERVICE_FRIEND)
@@ -51,7 +51,7 @@ def simulate_one_step(current_ts):
                 break
         if found:
            break
-        for fshipk2,fshipv2 in sorted(node["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
+        for fshipk2,fshipv2 in sorted(node1["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
            node2 = nodes_dic[fshipk2]
            for fshipk3,fshipv3 in sorted(node2["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
               node3 = nodes_dic[fshipk3]
@@ -63,7 +63,7 @@ def simulate_one_step(current_ts):
                break
         if found:
            break
-        for fshipk2,fshipv2 in sorted(node["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
+        for fshipk2,fshipv2 in sorted(node1["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
            node2 = nodes_dic[fshipk2]
            for fshipk3,fshipv3 in sorted(node2["friendships"].items(), key=lambda x: x[1]["strength"] * -1):
               node3 = nodes_dic[fshipk3]
