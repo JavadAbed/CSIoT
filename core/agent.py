@@ -76,8 +76,10 @@ def agents(ts_real, ts_requested):
      agent.pop('_id')
      data.append({"data": {"id": agent["name"], "locality":agent.get("locality"),"obj":agent },
 		"position": {"x": agent["x"],"y":agent["y"] }    })
-     for fshipk,fshipv_a in agent["friendships_h"].items():
-         fshipv = [x for x in fshipv_a if x["ts"]<=ts_requested ][-1]
+     for fshipk,fshipv_a in agent["friendships_h"].items() :
+         tmp = [x for x in fshipv_a if x["ts"]<=ts_requested ]
+         if len(tmp)==0: continue
+         fshipv = tmp[-1]
          # average:
          skip_me = False
          for d in data:
