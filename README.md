@@ -3,7 +3,7 @@
 
 ## Installing
 
-`git clone https://github.com/mabdi/CSIoT.git`
+`git clone https://github.com/JavadAbed/CSIoT.git`
 
 `cd CSIoT`
 
