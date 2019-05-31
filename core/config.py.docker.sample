@@ -1,0 +1,13 @@
+session_cookie_path = "/"
+session_cookie_name = "SESSION"
+secret_key = os.environ.get('csiot-secret') 
+server_name = os.environ.get('csiot-servername')
+mongo_db_name = "csiot"
+mongo_uri = os.environ.get('csiot-db')
+
+run = {
+    "debug": os.environ.get('csiot-dbg')== 'True',
+    "port": int(os.environ.get('csiot-port'),'5000'),
+    "host": '0.0.0.0',
+    "threaded": True
+}

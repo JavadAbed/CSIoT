@@ -1,0 +1,17 @@
+FROM python:3
+
+#WORKDIR /app
+#COPY . /app
+ADD . /app
+WORKDIR /app
+
+# config file
+RUN mv /app/core/config.py.docker.sample /app/core/config.py
+
+# Make default port available to the world outside this container
+EXPOSE 5000
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+ENTRYPOINT ["python","app.py"]

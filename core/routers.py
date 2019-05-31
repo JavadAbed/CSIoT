@@ -1,7 +1,8 @@
 from flask import session, redirect, url_for, render_template, Response, request
-from core import app,agent,simulation
+from core import app, agent, simulation
 from core.common import WebException, error_get_message, WebSuccess
 from core.annotations import make_params, api_wrapper
+
 
 
 @app.route('/', methods=['GET'])
@@ -66,3 +67,4 @@ def delete_all():
 @api_wrapper
 def last_messages():
     return WebSuccess(data= simulation.last_messages(1000))
+
